@@ -12,8 +12,8 @@ type AddReviewPageProps = {
 };
 
 function AddReviewPage({ film }: AddReviewPageProps): JSX.Element {
-  const [filmRating, setfilmRating] = useState(0);
-  if (filmRating !== undefined) {
+  const [filmRayting, setfilmRayting] = useState(0);
+  if (filmRayting !== undefined) {
     //на будущее с отправкой формы
   }
   return (
@@ -74,7 +74,7 @@ function AddReviewPage({ film }: AddReviewPageProps): JSX.Element {
         </div>
       </div>
       <div className="add-review">
-        <AddReviewForm onAnswer={(raiting) => setfilmRating(raiting)} />
+        <AddReviewForm onAnswer={(raiting) => setfilmRayting(raiting)} />
       </div>
     </section>
   );

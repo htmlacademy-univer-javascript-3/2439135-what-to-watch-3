@@ -11,7 +11,6 @@ import NotFoundScreen from '../../pages/not-found-page/not-found-page';
 import PrivateRoute from '../private-route/private-route';
 import { AppProps } from '../../types/props';
 import { films, VIDEO_URL } from '../../mocks/films';
-import { filmRatings } from '../../mocks/reviews';
 
 function App(props: AppProps): JSX.Element {
   return (
@@ -28,16 +27,7 @@ function App(props: AppProps): JSX.Element {
               </PrivateRoute>
             }
           />
-          <Route
-            path={AppRoute.Film}
-            element={
-              <MoviePage
-                rayting={filmRatings[idFirstFilm]}
-                mainFilm={films[idFirstFilm]}
-                moreFilms={films}
-              />
-            }
-          />
+          <Route path={AppRoute.Film} element={<MoviePage films={films} />} />
           <Route
             path={AppRoute.AddReview}
             element={<AddReviewPage film={films[idFirstFilm]} />}

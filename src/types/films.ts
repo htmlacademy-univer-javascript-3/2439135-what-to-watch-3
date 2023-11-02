@@ -1,16 +1,16 @@
+import { Genre } from '../const';
+import { Review } from './reviews';
 export type Film = {
   id: number;
-  genre: string;
+  genre: Genre;
   year: string;
   title: string;
   text: string;
-  director: string;
-  starring: string;
+  director: string[];
+  starring: string[];
   trailer: string;
-};
-export type FilmRating = {
-  filmId: number;
   score: number;
   level: string;
-  count: number;
+  time: string;
+  rewievs: Review[];
 };

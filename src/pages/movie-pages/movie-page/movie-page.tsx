@@ -1,26 +1,26 @@
 import { Link } from 'react-router-dom';
-import { AppRoute } from '../../../const';
+import { AppRoute, FilmImage } from '../../../const';
 import { FilmCards } from '../../../components/film-cards/film-cards';
 import { Film } from '../../../types/films';
-import { FilmRating } from '../../../types/films';
+import { Tabs } from '../../../components/tabs/tabs';
+import { GetSrcFilmImage } from '../../../functions/functions';
+import { useParams } from 'react-router';
+
 type MoviePageProps = {
-  rayting: FilmRating;
-  mainFilm: Film;
-  moreFilms: Film[];
+  films: Film[];
 };
-function MoviePage({
-  rayting,
-  mainFilm,
-  moreFilms,
-}: MoviePageProps): JSX.Element {
+
+function MoviePage({ films }: MoviePageProps): JSX.Element {
+  const params = useParams();
+  const mainFilm = films[parseInt(params.id || '1', 10) - 1];
   return (
     <>
       <section className="film-card film-card--full">
         <div className="film-card__hero">
           <div className="film-card__bg">
             <img
-              src="img/bg-the-grand-budapest-hotel.jpg"
-              alt="The Grand Budapest Hotel"
+              src={GetSrcFilmImage(mainFilm.title, FilmImage.BgImage)}
+              alt={mainFilm.title}
             />
           </div>
 
@@ -92,70 +92,14 @@ function MoviePage({
           <div className="film-card__info">
             <div className="film-card__poster film-card__poster--big">
               <img
-                src="img/the-grand-budapest-hotel-poster.jpg"
-                alt="The Grand Budapest Hotel poster"
+                src={GetSrcFilmImage(mainFilm.title, FilmImage.Poster)}
+                alt={mainFilm.title}
                 width="218"
                 height="327"
               />
             </div>
 
-            <div className="film-card__desc">
-              <nav className="film-nav film-card__nav">
-                <ul className="film-nav__list">
-                  <li className="film-nav__item film-nav__item--active">
-                    <a href="#" className="film-nav__link">
-                      Overview
-                    </a>
-                  </li>
-                  <li className="film-nav__item">
-                    <a href="#" className="film-nav__link">
-                      Details
-                    </a>
-                  </li>
-                  <li className="film-nav__item">
-                    <a href="#" className="film-nav__link">
-                      Reviews
-                    </a>
-                  </li>
-                </ul>
-              </nav>
-
-              <div className="film-rating">
-                <div className="film-rating__score">{rayting.score}</div>
-                <p className="film-rating__meta">
-                  <span className="film-rating__level">{rayting.level}</span>
-                  <span className="film-rating__count">
-                    {rayting.count} ratings
-                  </span>
-                </p>
-              </div>
-
-              <div className="film-card__text">
-                <p>
-                  In the 1930s, the Grand Budapest Hotel is a popular European
-                  ski resort, presided over by concierge Gustave H. (Ralph
-                  Fiennes). Zero, a junior lobby boy, becomes Gustave&apos;s
-                  friend and protege.
-                </p>
-
-                <p>
-                  Gustave prides himself on providing first-class service to the
-                  hotel&apos;s guests, including satisfying the sexual needs of
-                  the many elderly women who stay there. When one of
-                  Gustave&apos;s lovers dies mysteriously, Gustave finds himself
-                  the recipient of a priceless painting and the chief suspect in
-                  her murder.
-                </p>
-
-                <p className="film-card__director">
-                  <strong>Director: {mainFilm.director}</strong>
-                </p>
-
-                <p className="film-card__starring">
-                  <strong>Starring: {mainFilm.starring}</strong>
-                </p>
-              </div>
-            </div>
+            <Tabs film={mainFilm} />
           </div>
         </div>
       </section>
@@ -164,7 +108,11 @@ function MoviePage({
         <section className="catalog catalog--like-this">
           <h2 className="catalog__title">More like this</h2>
 
-          <FilmCards mainFilmId={mainFilm.id} films={moreFilms} />
+          <FilmCards
+            mainFilmId={mainFilm.id}
+            films={films}
+            genre={mainFilm.genre}
+          />
         </section>
 
         <footer className="page-footer">

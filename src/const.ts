@@ -23,20 +23,44 @@ export enum AuthorizationStatus {
   Unknown = 'UNKNOWN',
 }
 
-export const Genres = {
-  Drama: 'Drama',
-  Comedie: 'Comedie',
-  Crime: 'Crime',
-  Documentary: 'Documentary',
-  Horror: 'Horror',
-  KidsFamily: 'Kids & Family',
-  Romance: 'Romance',
-  SciFi: 'Sci-Fi',
-  Thriller: 'Thriller',
-};
-
+export enum Genre {
+  Drama = 'Drama',
+  Comedie = 'Comedie',
+  Crime = 'Crime',
+  Documentary = 'Documentary',
+  Horror = 'Horror',
+  KidsFamily = 'Kids & Family',
+  Romance = 'Romance',
+  SciFi = 'Sci-Fi',
+  Thriller = 'Thriller',
+  All = 'All genres',
+}
+export const genres: Genre[] = [
+  Genre.All,
+  Genre.Comedie,
+  Genre.Crime,
+  Genre.Documentary,
+  Genre.Drama,
+  Genre.Horror,
+  Genre.KidsFamily,
+  Genre.Romance,
+  Genre.SciFi,
+  Genre.Thriller,
+];
 export enum FilmImage {
   BgImage,
   Poster,
   SmallCard,
 }
+
+export enum TabItem {
+  Overview = 'Overview',
+  Details = 'Details',
+  Reviews = 'Reviews',
+}
+
+export const tabItems: TabItem[] = [
+  TabItem.Overview,
+  TabItem.Details,
+  TabItem.Reviews,
+];

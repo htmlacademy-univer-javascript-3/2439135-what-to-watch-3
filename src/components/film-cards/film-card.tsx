@@ -9,7 +9,7 @@ type FilmCardProps = {
   film: Film;
 };
 
-export function FilmCard({ film }: FilmCardProps) {
+export function FilmCard({ film }: FilmCardProps): JSX.Element {
   const [needPlayVideo, setNeedPlayVideo] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
   useEffect(() => {
