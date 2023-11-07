@@ -9,15 +9,18 @@ import AddReviewPage from '../../pages/add-review-page/add-review-page';
 import PlayerPage from '../../pages/player-pages/player-page/player-page';
 import NotFoundScreen from '../../pages/not-found-page/not-found-page';
 import PrivateRoute from '../private-route/private-route';
-import { AppProps } from '../../types/props';
 import { films, VIDEO_URL } from '../../mocks/films';
+import { AppProps } from '../../types/props';
 
-function App(props: AppProps): JSX.Element {
+function App({ mainFilm }: AppProps): JSX.Element {
   return (
     <HelmetProvider>
       <BrowserRouter>
         <Routes>
-          <Route path={AppRoute.Main} element={<WelcomePage {...props} />} />
+          <Route
+            path={AppRoute.Main}
+            element={<WelcomePage mainFilm={mainFilm} />}
+          />
           <Route path={AppRoute.SignIn} element={<SignInPage />} />
           <Route
             path={AppRoute.MyList}

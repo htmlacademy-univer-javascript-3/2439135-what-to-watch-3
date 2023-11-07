@@ -1,5 +1,5 @@
 import { Film } from '../types/films';
-import { Genre, idFirstFilm } from '../const';
+import { Genre } from '../const';
 
 export const VIDEO_URL =
   'https://download.blender.org/durian/trailer/sintel_trailer-480p.mp4';
@@ -515,5 +515,3 @@ export const films: Film[] = [
     ],
   },
 ];
-
-export const FIRST_MAIN_FILM: Film = films[idFirstFilm];

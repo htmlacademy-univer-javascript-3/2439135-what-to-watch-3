@@ -4,6 +4,8 @@ import { useEffect, useState } from 'react';
 import { VideoPlayer } from '../../components/video-player/video-player.tsx';
 import { FilmImage, timeoutVideo } from '../../const';
 import { GetSrcFilmImage } from '../../functions/functions.ts';
+import { useAppDispatch } from '../../hooks';
+import { filmsByGenre } from '../../store/action';
 
 type FilmCardProps = {
   film: Film;
@@ -12,6 +14,7 @@ type FilmCardProps = {
 export function FilmCard({ film }: FilmCardProps): JSX.Element {
   const [needPlayVideo, setNeedPlayVideo] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
+  const dispatch = useAppDispatch();
   useEffect(() => {
     let isMouseLeave = false;
     if (needPlayVideo) {
@@ -39,6 +42,9 @@ export function FilmCard({ film }: FilmCardProps): JSX.Element {
       to={`/films/${film.id}`}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
+      onClick={() => {
+        dispatch(filmsByGenre({ genre: film.genre }));
+      }}
     >
       <VideoPlayer
         src={film.trailer}

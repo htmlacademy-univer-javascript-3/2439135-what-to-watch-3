@@ -1,4 +1,15 @@
 import { FilmImage } from '../const';
+import { Film } from '../types/films.ts';
+import { Genre } from '../const';
+
+export function GetFilmsByGenre(genre: Genre, films: Film[]): Film[] {
+  switch (genre) {
+    case Genre.All:
+      return films;
+    default:
+      return films.filter((film) => film.genre === genre);
+  }
+}
 
 export function GetSrcFilmImage(title: string, filmImage: FilmImage): string {
   let imgName = title.toLowerCase().replace(':', '').replace(/ /gi, '-');

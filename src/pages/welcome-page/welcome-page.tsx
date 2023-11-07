@@ -1,16 +1,15 @@
 import { FilmCards } from '../../components/film-cards/film-cards';
 import { Film } from '../../types/films';
-import { FilmImage, genres, Genre } from '../../const';
+import { FilmImage } from '../../const';
 import { GetSrcFilmImage } from '../../functions/functions.ts';
-import { useState } from 'react';
-
+import { useAppSelector } from '../../hooks';
+import { GenresList } from '../../components/genres-list/genres-list.tsx';
 type WelcomePageProps = {
   mainFilm: Film;
-  films: Film[];
 };
 
-function WelcomePage({ mainFilm, films }: WelcomePageProps): JSX.Element {
-  const [selectedGenre, setSelectedGenre] = useState<Genre>(Genre.All);
+function WelcomePage({ mainFilm }: WelcomePageProps): JSX.Element {
+  const films = useAppSelector((state) => state.films);
   return (
     <>
       <section className="film-card">
@@ -96,31 +95,10 @@ function WelcomePage({ mainFilm, films }: WelcomePageProps): JSX.Element {
         <section className="catalog">
           <h2 className="catalog__title visually-hidden">Catalog</h2>
           <ul className="catalog__genres-list">
-            {genres.map((filmGenre) => (
-              <li
-                className={`catalog__genres-item
-                ${
-              (filmGenre === selectedGenre &&
-                    'catalog__genres-item--active') ||
-                  ''
-              }`}
-                key={filmGenre}
-              >
-                <div
-                  className="catalog__genres-link"
-                  onClick={() => setSelectedGenre(filmGenre)}
-                >
-                  {filmGenre}
-                </div>
-              </li>
-            ))}
+            <GenresList />
           </ul>
 
-          <FilmCards
-            mainFilmId={mainFilm.id}
-            films={films}
-            genre={selectedGenre}
-          />
+          <FilmCards mainFilmId={mainFilm.id} films={films} />
 
           <div className="catalog__more">
             <button className="catalog__button" type="button">

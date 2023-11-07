@@ -1,10 +1,12 @@
 import { Link } from 'react-router-dom';
-import { AppRoute, FilmImage } from '../../../const';
+import { AppRoute, FilmImage, Genre } from '../../../const';
 import { FilmCards } from '../../../components/film-cards/film-cards';
 import { Film } from '../../../types/films';
 import { Tabs } from '../../../components/tabs/tabs';
 import { GetSrcFilmImage } from '../../../functions/functions';
 import { useParams } from 'react-router';
+import { useAppSelector, useAppDispatch } from '../../../hooks';
+import { filmsByGenre, genreChange } from '../../../store/action';
 
 type MoviePageProps = {
   films: Film[];
@@ -13,6 +15,8 @@ type MoviePageProps = {
 function MoviePage({ films }: MoviePageProps): JSX.Element {
   const params = useParams();
   const mainFilm = films[parseInt(params.id || '1', 10) - 1];
+  const filmsLikeMain = useAppSelector((state) => state.films);
+  const dispatch = useAppDispatch();
   return (
     <>
       <section className="film-card film-card--full">
@@ -28,7 +32,14 @@ function MoviePage({ films }: MoviePageProps): JSX.Element {
 
           <header className="page-header film-card__head">
             <div className="logo">
-              <Link to={AppRoute.Main} className="logo__link">
+              <Link
+                to={AppRoute.Main}
+                className="logo__link"
+                onClick={() => {
+                  dispatch(genreChange({ genre: Genre.All }));
+                  dispatch(filmsByGenre({ genre: Genre.All }));
+                }}
+              >
                 <span className="logo__letter logo__letter--1">W</span>
                 <span className="logo__letter logo__letter--2">T</span>
                 <span className="logo__letter logo__letter--3">W</span>
@@ -108,15 +119,17 @@ function MoviePage({ films }: MoviePageProps): JSX.Element {
         <section className="catalog catalog--like-this">
           <h2 className="catalog__title">More like this</h2>
 
-          <FilmCards
-            mainFilmId={mainFilm.id}
-            films={films}
-            genre={mainFilm.genre}
-          />
+          <FilmCards mainFilmId={mainFilm.id} films={filmsLikeMain} />
         </section>
 
         <footer className="page-footer">
-          <div className="logo">
+          <div
+            className="logo"
+            onClick={() => {
+              dispatch(genreChange({ genre: Genre.All }));
+              dispatch(filmsByGenre({ genre: Genre.All }));
+            }}
+          >
             <Link to={AppRoute.Main} className="logo__link logo__link--light">
               <span className="logo__letter logo__letter--1">W</span>
               <span className="logo__letter logo__letter--2">T</span>
