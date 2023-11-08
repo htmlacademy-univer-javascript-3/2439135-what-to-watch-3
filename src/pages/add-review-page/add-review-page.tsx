@@ -7,6 +7,7 @@ import { Film } from '../../types/films';
 import { useState } from 'react';
 import { FilmImage } from '../../const';
 import { GetSrcFilmImage } from '../../functions/functions.ts';
+
 type AddReviewPageProps = {
   film: Film;
 };

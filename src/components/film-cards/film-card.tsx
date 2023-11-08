@@ -5,7 +5,7 @@ import { VideoPlayer } from '../../components/video-player/video-player.tsx';
 import { FilmImage, timeoutVideo } from '../../const';
 import { GetSrcFilmImage } from '../../functions/functions.ts';
 import { useAppDispatch } from '../../hooks';
-import { filmsByGenre } from '../../store/action';
+import { genreChange, settingFilms } from '../../store/action';
 
 type FilmCardProps = {
   film: Film;
@@ -43,7 +43,8 @@ export function FilmCard({ film }: FilmCardProps): JSX.Element {
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
       onClick={() => {
-        dispatch(filmsByGenre({ genre: film.genre }));
+        dispatch(genreChange({ genre: film.genre }));
+        dispatch(settingFilms());
       }}
     >
       <VideoPlayer

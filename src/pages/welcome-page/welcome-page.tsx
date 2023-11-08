@@ -1,14 +1,20 @@
 import { FilmCards } from '../../components/film-cards/film-cards';
 import { Film } from '../../types/films';
 import { FilmImage } from '../../const';
+import { GetCountFilmsByGenre } from './functions.ts';
 import { GetSrcFilmImage } from '../../functions/functions.ts';
-import { useAppSelector } from '../../hooks';
+import { useAppSelector, useAppDispatch } from '../../hooks';
 import { GenresList } from '../../components/genres-list/genres-list.tsx';
+import { countChange, settingFilms } from '../../store/action.ts';
+
 type WelcomePageProps = {
   mainFilm: Film;
 };
 
 function WelcomePage({ mainFilm }: WelcomePageProps): JSX.Element {
+  const dispatch = useAppDispatch();
+  const countFilms = useAppSelector((state) => state.count);
+  const genre = useAppSelector((state) => state.genre);
   const films = useAppSelector((state) => state.films);
   return (
     <>
@@ -99,12 +105,20 @@ function WelcomePage({ mainFilm }: WelcomePageProps): JSX.Element {
           </ul>
 
           <FilmCards mainFilmId={mainFilm.id} films={films} />
-
-          <div className="catalog__more">
-            <button className="catalog__button" type="button">
-              Show more
-            </button>
-          </div>
+          {GetCountFilmsByGenre(genre) > countFilms && (
+            <div className="catalog__more">
+              <button
+                className="catalog__button"
+                type="button"
+                onClick={() => {
+                  dispatch(countChange({ count: countFilms + 8 }));
+                  dispatch(settingFilms());
+                }}
+              >
+                Show more
+              </button>
+            </div>
+          )}
         </section>
 
         <footer className="page-footer">

@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom';
 import { AppRoute } from '../../const';
 import { Film } from '../../types/films';
 import { FilmCards } from '../../components/film-cards/film-cards';
+
 type MyListPageProps = {
   mainFilm: Film;
   films: Film[];

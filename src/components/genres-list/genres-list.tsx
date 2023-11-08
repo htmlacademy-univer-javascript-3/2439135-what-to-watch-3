@@ -1,6 +1,6 @@
 import { genres } from '../../const';
 import { useAppDispatch, useAppSelector } from '../../hooks';
-import { genreChange, filmsByGenre } from '../../store/action';
+import { genreChange, countChange, settingFilms } from '../../store/action';
 
 export function GenresList(): JSX.Element {
   const dispatch = useAppDispatch();
@@ -19,7 +19,8 @@ export function GenresList(): JSX.Element {
             className="catalog__genres-link"
             onClick={() => {
               dispatch(genreChange({ genre: filmGenre }));
-              dispatch(filmsByGenre({ genre: filmGenre }));
+              dispatch(countChange({ count: 8 }));
+              dispatch(settingFilms());
             }}
           >
             {filmGenre}

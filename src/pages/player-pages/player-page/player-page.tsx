@@ -1,7 +1,7 @@
 type PlayerPageProps = {
   videoUrl: string;
-}
-function PlayerPage({videoUrl}:PlayerPageProps): JSX.Element {
+};
+function PlayerPage({ videoUrl }: PlayerPageProps): JSX.Element {
   return (
     <div className="player">
       <video

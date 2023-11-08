@@ -1,12 +1,12 @@
 import { Link } from 'react-router-dom';
-import { AppRoute, FilmImage, Genre } from '../../../const';
-import { FilmCards } from '../../../components/film-cards/film-cards';
-import { Film } from '../../../types/films';
-import { Tabs } from '../../../components/tabs/tabs';
-import { GetSrcFilmImage } from '../../../functions/functions';
+import { AppRoute, FilmImage, Genre } from '../../const';
+import { FilmCards } from '../../components/film-cards/film-cards';
+import { Film } from '../../types/films';
+import { Tabs } from '../../components/tabs/tabs';
+import { GetSrcFilmImage } from '../../functions/functions';
 import { useParams } from 'react-router';
-import { useAppSelector, useAppDispatch } from '../../../hooks';
-import { filmsByGenre, genreChange } from '../../../store/action';
+import { useAppSelector, useAppDispatch } from '../../hooks';
+import { genreChange, countChange, settingFilms } from '../../store/action';
 
 type MoviePageProps = {
   films: Film[];
@@ -37,7 +37,8 @@ function MoviePage({ films }: MoviePageProps): JSX.Element {
                 className="logo__link"
                 onClick={() => {
                   dispatch(genreChange({ genre: Genre.All }));
-                  dispatch(filmsByGenre({ genre: Genre.All }));
+                  dispatch(countChange({ count: 8 }));
+                  dispatch(settingFilms());
                 }}
               >
                 <span className="logo__letter logo__letter--1">W</span>
@@ -127,7 +128,8 @@ function MoviePage({ films }: MoviePageProps): JSX.Element {
             className="logo"
             onClick={() => {
               dispatch(genreChange({ genre: Genre.All }));
-              dispatch(filmsByGenre({ genre: Genre.All }));
+              dispatch(countChange({ count: 8 }));
+              dispatch(settingFilms());
             }}
           >
             <Link to={AppRoute.Main} className="logo__link logo__link--light">
