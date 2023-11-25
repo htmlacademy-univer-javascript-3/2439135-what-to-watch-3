@@ -1,6 +1,7 @@
-export type Review = {
-  autor: string;
+export type Comment = {
+  id: string;
   date: string;
-  text: string;
-  rayting: number;
+  user: string;
+  comment: string;
+  rating: number;
 };

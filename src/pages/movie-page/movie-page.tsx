@@ -1,31 +1,35 @@
 import { Link } from 'react-router-dom';
-import { AppRoute, FilmImage, Genre } from '../../const';
+import { AppRoute } from '../../const';
 import { FilmCards } from '../../components/film-cards/film-cards';
-import { Film } from '../../types/films';
 import { Tabs } from '../../components/tabs/tabs';
-import { GetSrcFilmImage } from '../../functions/functions';
 import { useParams } from 'react-router';
 import { useAppSelector, useAppDispatch } from '../../hooks';
-import { genreChange, countChange, settingFilms } from '../../store/action';
+import { fetchFilmAction } from '../../store/api-actions';
+import { useEffect } from 'react';
+import { NotFoundPage } from '../not-found-page/not-found-page';
+import { ReturnToMainPage } from './return-to-main-page-function';
 
-type MoviePageProps = {
-  films: Film[];
-};
-
-function MoviePage({ films }: MoviePageProps): JSX.Element {
-  const params = useParams();
-  const mainFilm = films[parseInt(params.id || '1', 10) - 1];
-  const filmsLikeMain = useAppSelector((state) => state.films);
+function MoviePage(): JSX.Element {
+  const { id } = useParams();
   const dispatch = useAppDispatch();
+  const mainFilm = useAppSelector((state) => state.film);
+  const filmsLikeMain = useAppSelector((state) => state.films);
+
+  useEffect(() => {
+    if (id) {
+      dispatch(fetchFilmAction(id));
+    }
+  }, [dispatch, id]);
+
+  if (!mainFilm) {
+    return <NotFoundPage />;
+  }
   return (
     <>
       <section className="film-card film-card--full">
         <div className="film-card__hero">
           <div className="film-card__bg">
-            <img
-              src={GetSrcFilmImage(mainFilm.title, FilmImage.BgImage)}
-              alt={mainFilm.title}
-            />
+            <img src={mainFilm?.backgroundImage} alt={mainFilm?.name} />
           </div>
 
           <h1 className="visually-hidden">WTW</h1>
@@ -36,9 +40,7 @@ function MoviePage({ films }: MoviePageProps): JSX.Element {
                 to={AppRoute.Main}
                 className="logo__link"
                 onClick={() => {
-                  dispatch(genreChange({ genre: Genre.All }));
-                  dispatch(countChange({ count: 8 }));
-                  dispatch(settingFilms());
+                  ReturnToMainPage();
                 }}
               >
                 <span className="logo__letter logo__letter--1">W</span>
@@ -66,10 +68,10 @@ function MoviePage({ films }: MoviePageProps): JSX.Element {
 
           <div className="film-card__wrap">
             <div className="film-card__desc">
-              <h2 className="film-card__title">{mainFilm.title}</h2>
+              <h2 className="film-card__title">{mainFilm?.name}</h2>
               <p className="film-card__meta">
-                <span className="film-card__genre">{mainFilm.genre}</span>
-                <span className="film-card__year">{mainFilm.year}</span>
+                <span className="film-card__genre">{mainFilm?.genre}</span>
+                <span className="film-card__year">{mainFilm?.released}</span>
               </p>
 
               <div className="film-card__buttons">
@@ -104,8 +106,8 @@ function MoviePage({ films }: MoviePageProps): JSX.Element {
           <div className="film-card__info">
             <div className="film-card__poster film-card__poster--big">
               <img
-                src={GetSrcFilmImage(mainFilm.title, FilmImage.Poster)}
-                alt={mainFilm.title}
+                src={mainFilm?.backgroundImage}
+                alt={mainFilm?.name}
                 width="218"
                 height="327"
               />
@@ -120,16 +122,14 @@ function MoviePage({ films }: MoviePageProps): JSX.Element {
         <section className="catalog catalog--like-this">
           <h2 className="catalog__title">More like this</h2>
 
-          <FilmCards mainFilmId={mainFilm.id} films={filmsLikeMain} />
+          <FilmCards films={filmsLikeMain} />
         </section>
 
         <footer className="page-footer">
           <div
             className="logo"
             onClick={() => {
-              dispatch(genreChange({ genre: Genre.All }));
-              dispatch(countChange({ count: 8 }));
-              dispatch(settingFilms());
+              ReturnToMainPage();
             }}
           >
             <Link to={AppRoute.Main} className="logo__link logo__link--light">

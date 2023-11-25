@@ -1,14 +1,14 @@
-import type { Film } from '../../types/films.ts';
+import type { FilmType } from '../../types/films.ts';
 import { useState } from 'react';
 import { tabItems, TabItem } from '../../const';
 import { TabDetails } from './tab-details.tsx';
 import { TabOverview } from './tab-overview.tsx';
 import { TabReviews } from './tab-reviews.tsx';
 type TabsProps = {
-  film: Film;
+  film: FilmType;
 };
 
-function GetTabComponent(tab: TabItem, film: Film): JSX.Element {
+function GetTabComponent(tab: TabItem, film: FilmType): JSX.Element {
   switch (tab) {
     case TabItem.Overview:
       return <TabOverview film={film} />;
@@ -18,6 +18,7 @@ function GetTabComponent(tab: TabItem, film: Film): JSX.Element {
       return <TabReviews film={film} />;
   }
 }
+
 export function Tabs({ film }: TabsProps): JSX.Element {
   const [tab, setTab] = useState<TabItem>(TabItem.Overview);
   return (

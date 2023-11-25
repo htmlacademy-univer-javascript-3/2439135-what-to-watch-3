@@ -1,7 +1,7 @@
 import { Helmet } from 'react-helmet-async';
 import { Link } from 'react-router-dom';
 
-function NotFoundPage(): JSX.Element {
+export function NotFoundPage(): JSX.Element {
   return (
     <section className="game">
       <Helmet>

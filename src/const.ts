@@ -3,11 +3,20 @@ export const Setting = {
   Genre: 'Dramaaaaa',
   ReleaseDate: '2014',
 };
-
+export const APIRoute = {
+  Films: () => '/films',
+  Film: (filmId: string) => `/films/${filmId}`,
+  Similar: (filmId: string) => `/films/${filmId}/similar`,
+  Promo: () => '/promo',
+  Favorite: () => '/favorite',
+  Comments: (filmId: string) => `/comments/${filmId}`,
+  SignIn: () => '/login',
+  Logout: () => '/logout',
+  AddReview: () => '/films/:id/review',
+  MyList: () => '/mylist',
+};
 export const timeoutVideo = 1000;
-
-export const idFirstFilm = 0;
-
+export const TIMEOUT_SHOW_ERROR = 2000;
 export enum AppRoute {
   Main = '/',
   SignIn = '/login',
@@ -24,34 +33,33 @@ export enum AuthorizationStatus {
 }
 
 export enum Genre {
+  All = 'All genres',
   Drama = 'Drama',
-  Comedie = 'Comedie',
+  Action = 'Action',
+  Comedie = 'Comedy',
   Crime = 'Crime',
+  Fantasy = 'Fantasy',
   Documentary = 'Documentary',
   Horror = 'Horror',
   KidsFamily = 'Kids & Family',
   Romance = 'Romance',
-  SciFi = 'Sci-Fi',
+  Adventure = 'Adventure',
   Thriller = 'Thriller',
-  All = 'All genres',
+  SciFi = 'Sci-Fi',
 }
+
 export const genres: Genre[] = [
   Genre.All,
   Genre.Comedie,
   Genre.Crime,
-  Genre.Documentary,
+  Genre.Adventure,
   Genre.Drama,
-  Genre.Horror,
-  Genre.KidsFamily,
+  Genre.Action,
+  Genre.Fantasy,
   Genre.Romance,
   Genre.SciFi,
   Genre.Thriller,
 ];
-export enum FilmImage {
-  BgImage,
-  Poster,
-  SmallCard,
-}
 
 export enum TabItem {
   Overview = 'Overview',

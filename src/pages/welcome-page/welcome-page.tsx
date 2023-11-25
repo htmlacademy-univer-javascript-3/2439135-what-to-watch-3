@@ -1,29 +1,23 @@
 import { FilmCards } from '../../components/film-cards/film-cards';
-import { Film } from '../../types/films';
-import { FilmImage } from '../../const';
-import { GetCountFilmsByGenre } from './functions.ts';
-import { GetSrcFilmImage } from '../../functions/functions.ts';
+import { PromoFilmType } from '../../types/films';
 import { useAppSelector, useAppDispatch } from '../../hooks';
 import { GenresList } from '../../components/genres-list/genres-list.tsx';
-import { countChange, settingFilms } from '../../store/action.ts';
+import { setCount, setFilmsDisplayed } from '../../store/action.ts';
 
 type WelcomePageProps = {
-  mainFilm: Film;
+  promoFilm: PromoFilmType;
 };
 
-function WelcomePage({ mainFilm }: WelcomePageProps): JSX.Element {
+function WelcomePage({ promoFilm }: WelcomePageProps): JSX.Element {
   const dispatch = useAppDispatch();
-  const countFilms = useAppSelector((state) => state.count);
-  const genre = useAppSelector((state) => state.genre);
-  const films = useAppSelector((state) => state.films);
+  const countDisplayedFilms = useAppSelector((state) => state.count);
+  const countFilmsByGenres = useAppSelector((state) => state.filmsByGenre);
+  const films = useAppSelector((state) => state.filmsDisplayed);
   return (
     <>
       <section className="film-card">
         <div className="film-card__bg">
-          <img
-            src={GetSrcFilmImage(mainFilm.title, FilmImage.BgImage)}
-            alt={mainFilm.title}
-          />
+          <img src={promoFilm.backgroundImage} alt={promoFilm.name} />
         </div>
 
         <h1 className="visually-hidden">WTW</h1>
@@ -58,18 +52,18 @@ function WelcomePage({ mainFilm }: WelcomePageProps): JSX.Element {
           <div className="film-card__info">
             <div className="film-card__poster">
               <img
-                src={GetSrcFilmImage(mainFilm.title, FilmImage.Poster)}
-                alt={`${mainFilm.title} poster`}
+                src={promoFilm.posterImage}
+                alt={`${promoFilm.name} poster`}
                 width="218"
                 height="327"
               />
             </div>
 
             <div className="film-card__desc">
-              <h2 className="film-card__title">{mainFilm.title}</h2>
+              <h2 className="film-card__title">{promoFilm.name}</h2>
               <p className="film-card__meta">
-                <span className="film-card__genre">{mainFilm.title}</span>
-                <span className="film-card__year">{mainFilm.year}</span>
+                <span className="film-card__genre">{promoFilm.name}</span>
+                <span className="film-card__year">{promoFilm.released}</span>
               </p>
 
               <div className="film-card__buttons">
@@ -104,15 +98,16 @@ function WelcomePage({ mainFilm }: WelcomePageProps): JSX.Element {
             <GenresList />
           </ul>
 
-          <FilmCards mainFilmId={mainFilm.id} films={films} />
-          {GetCountFilmsByGenre(genre) > countFilms && (
+          <FilmCards films={films} />
+
+          {countDisplayedFilms < countFilmsByGenres.length && (
             <div className="catalog__more">
               <button
                 className="catalog__button"
                 type="button"
                 onClick={() => {
-                  dispatch(countChange({ count: countFilms + 8 }));
-                  dispatch(settingFilms());
+                  dispatch(setCount({ count: countDisplayedFilms + 8 }));
+                  dispatch(setFilmsDisplayed());
                 }}
               >
                 Show more
