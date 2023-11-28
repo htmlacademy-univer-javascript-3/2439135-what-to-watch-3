@@ -20,7 +20,7 @@ function HeadGuestPage(): JSX.Element {
         </div>
 
         <div className="user-block">
-          <Link to={AppRoute.SignIn} className="user-block__link">
+          <Link to={AppRoute.Login} className="user-block__link">
             Sign in
           </Link>
         </div>

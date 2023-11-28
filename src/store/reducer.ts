@@ -8,8 +8,10 @@ import {
   setFilmsDataLoadingStatus,
   loadPromoFilm,
   loadFilm,
+  requireAuthorization,
+  setError,
 } from './action';
-import { Genre } from '../const';
+import { Genre, AuthorizationStatus } from '../const';
 import { FilmCardType, FilmType, PromoFilmType } from '../types/films';
 
 type InitalState = {
@@ -18,10 +20,11 @@ type InitalState = {
   filmsDisplayed: FilmCardType[];
   filmsByGenre: FilmCardType[];
   count: number;
-  error: string | null;
   isFilmsDataLoading: boolean;
   promoFilm: PromoFilmType;
   film: FilmType | null;
+  authorizationStatus: AuthorizationStatus;
+  error: string | null;
 };
 const initialState: InitalState = {
   genre: Genre.All,
@@ -29,7 +32,6 @@ const initialState: InitalState = {
   filmsDisplayed: [],
   filmsByGenre: [],
   count: 8,
-  error: null,
   isFilmsDataLoading: false,
   promoFilm: {
     id: '',
@@ -42,6 +44,8 @@ const initialState: InitalState = {
     isFavorite: false,
   },
   film: null,
+  authorizationStatus: AuthorizationStatus.Unknown,
+  error: null,
 };
 
 const reducer = createReducer(initialState, (builder) => {
@@ -80,6 +84,12 @@ const reducer = createReducer(initialState, (builder) => {
     })
     .addCase(loadPromoFilm, (state, action) => {
       state.promoFilm = action.payload;
+    })
+    .addCase(requireAuthorization, (state, action) => {
+      state.authorizationStatus = action.payload;
+    })
+    .addCase(setError, (state, action) => {
+      state.error = action.payload;
     });
 });
 

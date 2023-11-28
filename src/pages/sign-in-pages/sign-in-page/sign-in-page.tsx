@@ -1,7 +1,36 @@
 import { Link } from 'react-router-dom';
 import { AppRoute } from '../../../const';
+import { useRef, FormEvent } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useAppDispatch, useAppSelector } from '../../../hooks';
+import { loginAction } from '../../../store/api-actions';
+import { AuthorizationStatus } from '../../../const';
 
 function SignInPage(): JSX.Element {
+  const loginRef = useRef<HTMLInputElement | null>(null);
+  const passwordRef = useRef<HTMLInputElement | null>(null);
+  const authorizationStatus = useAppSelector(
+    (state) => state.authorizationStatus
+  );
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
+
+  const handleSubmit = (evt: FormEvent<HTMLFormElement>) => {
+    evt.preventDefault();
+
+    if (loginRef.current !== null && passwordRef.current !== null) {
+      dispatch(
+        loginAction({
+          login: loginRef.current.value,
+          password: passwordRef.current.value,
+        })
+      );
+    }
+    if (authorizationStatus === AuthorizationStatus.Auth) {
+      navigate(AppRoute.Main);
+    }
+  };
+
   return (
     <div className="user-page">
       <header className="page-header user-page__head">
@@ -17,13 +46,14 @@ function SignInPage(): JSX.Element {
       </header>
 
       <div className="sign-in user-page__content">
-        <form action="#" className="sign-in__form">
+        <form action="#" className="sign-in__form" onSubmit={handleSubmit}>
           <div className="sign-in__fields">
             <div className="sign-in__field">
               <input
+                ref={loginRef}
                 className="sign-in__input"
-                type="email"
                 placeholder="Email address"
+                type="email"
                 name="user-email"
                 id="user-email"
               />
@@ -36,9 +66,10 @@ function SignInPage(): JSX.Element {
             </div>
             <div className="sign-in__field">
               <input
+                ref={passwordRef}
                 className="sign-in__input"
-                type="password"
                 placeholder="Password"
+                type="password"
                 name="user-password"
                 id="user-password"
               />

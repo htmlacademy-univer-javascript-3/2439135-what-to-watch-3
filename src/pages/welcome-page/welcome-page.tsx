@@ -3,12 +3,18 @@ import { PromoFilmType } from '../../types/films';
 import { useAppSelector, useAppDispatch } from '../../hooks';
 import { GenresList } from '../../components/genres-list/genres-list.tsx';
 import { setCount, setFilmsDisplayed } from '../../store/action.ts';
-
+import { AuthorizationStatus } from '../../const';
+import { UserBlockAuth } from '../../components/user-block/user-block-auth.tsx';
+import { UserBlockNoAuth } from '../../components/user-block/user-block-no-auth.tsx';
 type WelcomePageProps = {
   promoFilm: PromoFilmType;
+  authorizationStatus: AuthorizationStatus;
 };
 
-function WelcomePage({ promoFilm }: WelcomePageProps): JSX.Element {
+function WelcomePage({
+  promoFilm,
+  authorizationStatus,
+}: WelcomePageProps): JSX.Element {
   const dispatch = useAppDispatch();
   const countDisplayedFilms = useAppSelector((state) => state.count);
   const countFilmsByGenres = useAppSelector((state) => state.filmsByGenre);
@@ -31,21 +37,11 @@ function WelcomePage({ promoFilm }: WelcomePageProps): JSX.Element {
             </a>
           </div>
 
-          <ul className="user-block">
-            <li className="user-block__item">
-              <div className="user-block__avatar">
-                <img
-                  src="img/avatar.jpg"
-                  alt="User avatar"
-                  width="63"
-                  height="63"
-                />
-              </div>
-            </li>
-            <li className="user-block__item">
-              <a className="user-block__link">Sign out</a>
-            </li>
-          </ul>
+          {authorizationStatus === AuthorizationStatus.Auth ? (
+            <UserBlockAuth />
+          ) : (
+            <UserBlockNoAuth />
+          )}
         </header>
 
         <div className="film-card__wrap">
