@@ -2,22 +2,45 @@ import { Link } from 'react-router-dom';
 import { AppRoute } from '../../const';
 import { FilmCards } from '../../components/film-cards/film-cards';
 import { Tabs } from '../../components/tabs/tabs';
-import { useParams } from 'react-router';
+import { useParams, useNavigate } from 'react-router';
 import { useAppSelector, useAppDispatch } from '../../hooks';
-import { fetchFilmAction } from '../../store/api-actions';
+import {
+  fetchFilmAction,
+  fetchCommentsAction,
+  fetchSimilarFilmsAction,
+} from '../../store/api-actions';
 import { useEffect } from 'react';
 import { NotFoundPage } from '../not-found-page/not-found-page';
-import { ReturnToMainPage } from './return-to-main-page-function';
+import { ResetMovieSettings } from './reset-movie-settings';
+import {
+  setSimilarFilmsCount,
+  setSimilarFilmsDisplayed,
+} from '../../store/action.ts';
+import { AuthorizationStatus } from '../../const';
+import { UserBlock } from '../../components/user-block/user-block.tsx';
+type MoviePageProps = {
+  authorizationStatus: AuthorizationStatus;
+};
 
-function MoviePage(): JSX.Element {
+function MoviePage({ authorizationStatus }: MoviePageProps): JSX.Element {
   const { id } = useParams();
   const dispatch = useAppDispatch();
   const mainFilm = useAppSelector((state) => state.film);
-  const filmsLikeMain = useAppSelector((state) => state.films);
-
+  const similarFilms = useAppSelector((state) => state.similarFilms);
+  const comments = useAppSelector((state) => state.comments);
+  const countDisplayedFilms = useAppSelector(
+    (state) => state.similarFilmsCount
+  );
+  const userListFilms = useAppSelector((state) => state.userListFilms);
+  const navigate = useNavigate();
+  const onCliclMyListHandler = () => {
+    navigate(AppRoute.MyList);
+  };
   useEffect(() => {
     if (id) {
       dispatch(fetchFilmAction(id));
+      dispatch(fetchCommentsAction(id));
+      dispatch(fetchSimilarFilmsAction(id));
     }
   }, [dispatch, id]);
 
@@ -40,7 +63,7 @@ function MoviePage(): JSX.Element {
                 to={AppRoute.Main}
                 className="logo__link"
                 onClick={() => {
-                  ReturnToMainPage();
+                  ResetMovieSettings();
                 }}
               >
                 <span className="logo__letter logo__letter--1">W</span>
@@ -49,21 +72,7 @@ function MoviePage(): JSX.Element {
               </Link>
             </div>
 
-            <ul className="user-block">
-              <li className="user-block__item">
-                <div className="user-block__avatar">
-                  <img
-                    src="img/avatar.jpg"
-                    alt="User avatar"
-                    width="63"
-                    height="63"
-                  />
-                </div>
-              </li>
-              <li className="user-block__item">
-                <a className="user-block__link">Sign out</a>
-              </li>
-            </ul>
+            <UserBlock authorizationStatus={authorizationStatus} />
           </header>
 
           <div className="film-card__wrap">
@@ -87,16 +96,24 @@ function MoviePage(): JSX.Element {
                 <button
                   className="btn btn--list film-card__button"
                   type="button"
+                  onClick={onCliclMyListHandler}
                 >
                   <svg viewBox="0 0 19 20" width="19" height="20">
                     <use href="#add"></use>
                   </svg>
                   <span>My list</span>
-                  <span className="film-card__count">9</span>
+                  <span className="film-card__count">
+                    {userListFilms.length}
+                  </span>
                 </button>
-                <Link to={AppRoute.AddReview} className="btn film-card__button">
-                  Add review
-                </Link>
+                {authorizationStatus === AuthorizationStatus.Auth && (
+                  <Link
+                    to={AppRoute.AddReview}
+                    className="btn film-card__button"
+                  >
+                    Add review
+                  </Link>
+                )}
               </div>
             </div>
           </div>
@@ -113,7 +130,7 @@ function MoviePage(): JSX.Element {
               />
             </div>
 
-            <Tabs film={mainFilm} />
+            <Tabs film={mainFilm} comments={comments} />
           </div>
         </div>
       </section>
@@ -122,14 +139,28 @@ function MoviePage(): JSX.Element {
         <section className="catalog catalog--like-this">
           <h2 className="catalog__title">More like this</h2>
 
-          <FilmCards films={filmsLikeMain} />
+          <FilmCards films={similarFilms} />
+          {countDisplayedFilms < similarFilms.length && (
+            <div className="catalog__more">
+              <button
+                className="catalog__button"
+                type="button"
+                onClick={() => {
+                  dispatch(setSimilarFilmsCount(countDisplayedFilms + 8));
+                  dispatch(setSimilarFilmsDisplayed());
+                }}
+              >
+                Show more
+              </button>
+            </div>
+          )}
         </section>
 
         <footer className="page-footer">
           <div
             className="logo"
             onClick={() => {
-              ReturnToMainPage();
+              ResetMovieSettings();
             }}
           >
             <Link to={AppRoute.Main} className="logo__link logo__link--light">

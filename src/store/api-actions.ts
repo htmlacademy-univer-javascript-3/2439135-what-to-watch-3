@@ -9,13 +9,17 @@ import {
   loadFilm,
   requireAuthorization,
   setError,
+  loadComments,
+  loadSimilarFilms,
+  loadUserListFilms,
+  addComment,
 } from './action';
 import { APIRoute, AuthorizationStatus, TIMEOUT_SHOW_ERROR } from '../const';
 import { AuthData } from '../types/auth-data';
 import { UserData } from '../types/user-data';
 import { saveToken, dropToken } from '../services/token';
 import { store } from './';
-
+import { Comment } from '../types/reviews';
 export const clearErrorAction = createAsyncThunk('game/clearError', () => {
   setTimeout(() => store.dispatch(setError(null)), TIMEOUT_SHOW_ERROR);
 });
@@ -114,4 +118,63 @@ export const logoutAction = createAsyncThunk<
   await api.delete(APIRoute.Logout());
   dropToken();
   dispatch(requireAuthorization(AuthorizationStatus.NoAuth));
+});
+
+export const fetchSimilarFilmsAction = createAsyncThunk<
+  void,
+  string,
+  {
+    dispatch: AppDispatch;
+    state: State;
+    extra: AxiosInstance;
+  }
+>('loadSimilarFilms', async (id, { dispatch, extra: api }) => {
+  await api
+    .get<FilmCardType[]>(APIRoute.Similar(id))
+    .then((res) => dispatch(loadSimilarFilms(res.data)));
+});
+
+export const fetchCommentsAction = createAsyncThunk<
+  void,
+  string,
+  {
+    dispatch: AppDispatch;
+    state: State;
+    extra: AxiosInstance;
+  }
+>('loadComments', async (id, { dispatch, extra: api }) => {
+  await api
+    .get<Comment[]>(APIRoute.Comments(id))
+    .then((res) => dispatch(loadComments(res.data)));
+});
+
+export const sendCommentAction = createAsyncThunk<
+  void,
+  { id: string; rating: number; comment: string },
+  {
+    dispatch: AppDispatch;
+    state: State;
+    extra: AxiosInstance;
+  }
+>('addComment', async ({ id, rating, comment }, { dispatch, extra: api }) => {
+  await api
+    .post<Comment>(APIRoute.Comments(id), {
+      rating: rating,
+      comment: comment,
+    })
+    .then((res) => dispatch(addComment(res.data)));
+});
+
+export const fetchUserListAction = createAsyncThunk<
+  void,
+  undefined,
+  {
+    dispatch: AppDispatch;
+    state: State;
+    extra: AxiosInstance;
+  }
+>('loadUserListFilms', async (_arg, { dispatch, extra: api }) => {
+  await api
+    .get<FilmCardType[]>(APIRoute.Favorite())
+    .then((res) => dispatch(loadUserListFilms(res.data)));
 });

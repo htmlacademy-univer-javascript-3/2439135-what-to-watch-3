@@ -6,7 +6,7 @@ import {
   setFilmsByGenre,
 } from '../../store/action';
 import { Genre } from '../../const';
-export function ReturnToMainPage() {
+export function ResetMovieSettings() {
   const dispatch = useAppDispatch();
   dispatch(setGenre({ genre: Genre.All }));
   dispatch(setCount({ count: 8 }));

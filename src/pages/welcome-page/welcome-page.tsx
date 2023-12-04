@@ -3,9 +3,10 @@ import { PromoFilmType } from '../../types/films';
 import { useAppSelector, useAppDispatch } from '../../hooks';
 import { GenresList } from '../../components/genres-list/genres-list.tsx';
 import { setCount, setFilmsDisplayed } from '../../store/action.ts';
-import { AuthorizationStatus } from '../../const';
-import { UserBlockAuth } from '../../components/user-block/user-block-auth.tsx';
-import { UserBlockNoAuth } from '../../components/user-block/user-block-no-auth.tsx';
+import { AuthorizationStatus, AppRoute } from '../../const';
+import { UserBlock } from '../../components/user-block/user-block.tsx';
+import { useNavigate } from 'react-router';
+
 type WelcomePageProps = {
   promoFilm: PromoFilmType;
   authorizationStatus: AuthorizationStatus;
@@ -17,8 +18,13 @@ function WelcomePage({
 }: WelcomePageProps): JSX.Element {
   const dispatch = useAppDispatch();
   const countDisplayedFilms = useAppSelector((state) => state.count);
-  const countFilmsByGenres = useAppSelector((state) => state.filmsByGenre);
+  const fFilmsByGenres = useAppSelector((state) => state.filmsByGenre);
   const films = useAppSelector((state) => state.filmsDisplayed);
+  const navigate = useNavigate();
+  const userListFilms = useAppSelector((state) => state.userListFilms);
+  const onCliclMyListHandler = () => {
+    navigate(AppRoute.MyList);
+  };
   return (
     <>
       <section className="film-card">
@@ -37,11 +43,7 @@ function WelcomePage({
             </a>
           </div>
 
-          {authorizationStatus === AuthorizationStatus.Auth ? (
-            <UserBlockAuth />
-          ) : (
-            <UserBlockNoAuth />
-          )}
+          <UserBlock authorizationStatus={authorizationStatus} />
         </header>
 
         <div className="film-card__wrap">
@@ -75,12 +77,15 @@ function WelcomePage({
                 <button
                   className="btn btn--list film-card__button"
                   type="button"
+                  onClick={onCliclMyListHandler}
                 >
                   <svg viewBox="0 0 19 20" width="19" height="20">
                     <use href="#add"></use>
                   </svg>
                   <span>My list</span>
-                  <span className="film-card__count">9</span>
+                  <span className="film-card__count">
+                    {userListFilms.length}
+                  </span>
                 </button>
               </div>
             </div>
@@ -96,7 +101,7 @@ function WelcomePage({
 
           <FilmCards films={films} />
 
-          {countDisplayedFilms < countFilmsByGenres.length && (
+          {countDisplayedFilms < fFilmsByGenres.length && (
             <div className="catalog__more">
               <button
                 className="catalog__button"

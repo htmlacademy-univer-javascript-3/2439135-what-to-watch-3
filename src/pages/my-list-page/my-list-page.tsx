@@ -1,12 +1,14 @@
 import { Link } from 'react-router-dom';
 import { AppRoute } from '../../const';
-import { FilmCardType } from '../../types/films';
 import { FilmCards } from '../../components/film-cards/film-cards';
-
+import { useAppSelector } from '../../hooks';
+import { UserBlock } from '../../components/user-block/user-block.tsx';
+import { AuthorizationStatus } from '../../const';
 type MyListPageProps = {
-  films: FilmCardType[];
+  authorizationStatus: AuthorizationStatus;
 };
-function MyListPage({ films }: MyListPageProps): JSX.Element {
+function MyListPage({ authorizationStatus }: MyListPageProps): JSX.Element {
+  const films = useAppSelector((state) => state.userListFilms);
   return (
     <div className="user-page">
       <header className="page-header user-page__head">
@@ -21,21 +23,7 @@ function MyListPage({ films }: MyListPageProps): JSX.Element {
         <h1 className="page-title user-page__title">
           My list <span className="user-page__film-count">9</span>
         </h1>
-        <ul className="user-block">
-          <li className="user-block__item">
-            <div className="user-block__avatar">
-              <img
-                src="img/avatar.jpg"
-                alt="User avatar"
-                width="63"
-                height="63"
-              />
-            </div>
-          </li>
-          <li className="user-block__item">
-            <a className="user-block__link">Sign out</a>
-          </li>
-        </ul>
+        <UserBlock authorizationStatus={authorizationStatus} />
       </header>
 
       <section className="catalog">

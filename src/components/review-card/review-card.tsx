@@ -11,8 +11,8 @@ export function ReviewCard({ rewiev }: RewievProps): JSX.Element {
 
         <footer className="review__details">
           <cite className="review__author">{rewiev.user}</cite>
-          <time className="review__date" dateTime="2015-11-18">
-            {rewiev.date}
+          <time className="review__date" dateTime={rewiev.date.split('T')[0]}>
+            {rewiev.date.split('T')[0]}
           </time>
         </footer>
       </blockquote>

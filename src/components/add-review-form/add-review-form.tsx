@@ -1,16 +1,37 @@
-import { useState, FormEvent } from 'react';
-type AddReviewFormProps = {
-  onAnswer: (rayting: number) => void;
-};
-export function AddReviewForm({ onAnswer }: AddReviewFormProps): JSX.Element {
-  const [userAnswers, setUserAnswers] = useState(0);
+import { ChangeEvent, FormEvent, useRef, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useAppDispatch, useAppSelector } from '../../hooks/index';
+import { sendCommentAction } from '../../store/api-actions';
+import { NotFoundPage } from '../../pages/not-found-page/not-found-page';
+
+export function AddReviewForm(): JSX.Element {
+  const [userRayting, setUserRayting] = useState(0);
+  const commentRef = useRef<HTMLTextAreaElement>(null);
+  const navigate = useNavigate();
+  const film = useAppSelector((state) => state.film);
+  const dispatch = useAppDispatch();
+
+  if (!film) {
+    return <NotFoundPage />;
+  }
+  const onChangeHandler = (evt: ChangeEvent<HTMLInputElement>) => {
+    setUserRayting(Number(evt.target.value));
+  };
+
+  const onSubmitHandler = (rating: number, comment: string) => {
+    dispatch(sendCommentAction({ id: film.id, rating, comment }));
+    navigate(`/films/${film.id}`);
+  };
+
   return (
     <form
       action="#"
       className="add-review__form"
       onSubmit={(evt: FormEvent<HTMLFormElement>) => {
         evt.preventDefault();
-        onAnswer(userAnswers);
+        if (userRayting && commentRef.current?.value) {
+          onSubmitHandler(userRayting, commentRef.current.value);
+        }
       }}
     >
       <div className="rating">
@@ -23,9 +44,7 @@ export function AddReviewForm({ onAnswer }: AddReviewFormProps): JSX.Element {
                 type="radio"
                 name="rating"
                 value={`${num}`}
-                onChange={() => {
-                  setUserAnswers(num);
-                }}
+                onChange={onChangeHandler}
               />
               <label className="rating__label" htmlFor={`star-${num}`}>
                 Rating {num}
@@ -37,6 +56,7 @@ export function AddReviewForm({ onAnswer }: AddReviewFormProps): JSX.Element {
 
       <div className="add-review__text">
         <textarea
+          ref={commentRef}
           className="add-review__textarea"
           name="review-text"
           id="review-text"
@@ -44,7 +64,11 @@ export function AddReviewForm({ onAnswer }: AddReviewFormProps): JSX.Element {
         >
         </textarea>
         <div className="add-review__submit">
-          <button className="add-review__btn" type="submit">
+          <button
+            className="add-review__btn"
+            type="submit"
+            disabled={!userRayting || !commentRef.current?.value}
+          >
             Post
           </button>
         </div>

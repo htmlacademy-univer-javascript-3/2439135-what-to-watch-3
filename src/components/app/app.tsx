@@ -16,7 +16,6 @@ function App(): JSX.Element {
   const isQuestionsDataLoading = useAppSelector(
     (state) => state.isFilmsDataLoading
   );
-  const films = useAppSelector((state) => state.films);
   const authorizationStatus = useAppSelector(
     (state) => state.authorizationStatus
   );
@@ -43,23 +42,19 @@ function App(): JSX.Element {
             path={AppRoute.MyList}
             element={
               <PrivateRoute authorizationStatus={authorizationStatus}>
-                <MyListPage films={films} />
+                <MyListPage authorizationStatus={authorizationStatus} />
               </PrivateRoute>
             }
           />
           <Route
             path={AppRoute.Film}
-            element={
-              <PrivateRoute authorizationStatus={authorizationStatus}>
-                <MoviePage />
-              </PrivateRoute>
-            }
+            element={<MoviePage authorizationStatus={authorizationStatus} />}
           />
           <Route
             path={AppRoute.AddReview}
             element={
               <PrivateRoute authorizationStatus={authorizationStatus}>
-                <AddReviewPage film={promoFilm} />
+                <AddReviewPage />
               </PrivateRoute>
             }
           />
