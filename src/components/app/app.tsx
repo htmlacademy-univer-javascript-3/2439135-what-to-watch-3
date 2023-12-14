@@ -6,7 +6,7 @@ import MyListPage from '../../pages/my-list-page/my-list-page';
 import SignInPage from '../../pages/sign-in-pages/sign-in-page/sign-in-page';
 import MoviePage from '../../pages/movie-page/movie-page';
 import AddReviewPage from '../../pages/add-review-page/add-review-page';
-import PlayerPage from '../../pages/player-pages/player-page/player-page';
+import PlayerPage from '../../pages/player-page/player-page.tsx';
 import NotFoundScreen from '../../pages/not-found-page/not-found-page';
 import PrivateRoute from '../private-route/private-route';
 import { useAppSelector } from '../../hooks';
@@ -63,7 +63,7 @@ function App(): JSX.Element {
           />
           <Route
             path={AppRoute.Player}
-            element={<PlayerPage videoUrl={''} />}
+            element={<PlayerPage />}
           />
           <Route path="*" element={<NotFoundScreen />} />
         </Routes>

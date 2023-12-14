@@ -9,6 +9,7 @@ import {
   fetchFilmsAction,
   fetchPromoFilmAction,
   fetchSimilarFilmsAction,
+  fetchUserListAction
 } from '../api-actions.ts';
 
 export const InitialNumberFilms = 8;
@@ -168,6 +169,19 @@ export const filmData = createSlice({
       .addCase(sendCommentAction.fulfilled, (state, action) => {
         state.comments = [...state.comments, action.payload];
         state.isCommentSend = false;
+      })
+
+
+      .addCase(fetchUserListAction.pending, (state) => {
+        state.isUserFilmsLoading = true;
+      })
+      .addCase(fetchUserListAction.fulfilled, (state, action) => {
+        state.userListFilms = action.payload;
+        state.isUserFilmsLoading = false;
+      })
+      .addCase(fetchUserListAction.rejected, (state) => {
+        state.isUserFilmsLoading = false;
+        state.hasError = true;
       });
   },
 });

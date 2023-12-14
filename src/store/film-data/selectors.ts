@@ -18,7 +18,7 @@ export const getSimilarFilms = (state: State): FilmCardType[] =>
 export const getSimilarFilmsDataLoadingStatus = (state: State): boolean =>
   state[NameSpace.Data].isSimilarFilmsLoading;
 
-//export const getUserFilms = (state: State): FilmCardType[] => state[NameSpace.Data].userListFilms;
+export const getUserFilms = (state: State): FilmCardType[] => state[NameSpace.Data].userListFilms;
 //export const getUserFilmsDataLoadingStatus = (state: State): boolean => state[NameSpace.Data].isUserFilmsLoading;
 
 export const getComments = (state: State): Comment[] =>

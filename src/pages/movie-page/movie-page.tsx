@@ -21,11 +21,13 @@ type MoviePageProps = {
 import {
   getFilm,
   getSimilarFilms,
-  getComments, getSimilarFilmsCount
+  getComments,
+  getSimilarFilmsCount,
 } from '../../store/film-data/selectors.ts';
 
 import {
-  setSimilarFilmsDisplayed, increaseSimilarFilmsCount
+  setSimilarFilmsDisplayed,
+  increaseSimilarFilmsCount,
 } from '../../store/film-data/film-data.ts';
 function MoviePage({ authorizationStatus }: MoviePageProps): JSX.Element {
   const { id } = useParams();
@@ -37,7 +39,11 @@ function MoviePage({ authorizationStatus }: MoviePageProps): JSX.Element {
   const userListFilms = []; //useAppSelector(getUserFilms);
   const navigate = useNavigate();
   const onCliclMyListHandler = () => {
-    navigate(AppRoute.MyList);
+    if (authorizationStatus === AuthorizationStatus.Auth) {
+      navigate(AppRoute.MyList);
+    } else {
+      navigate(AppRoute.Login);
+    }
   };
   useEffect(() => {
     if (id) {
@@ -87,15 +93,16 @@ function MoviePage({ authorizationStatus }: MoviePageProps): JSX.Element {
               </p>
 
               <div className="film-card__buttons">
-                <button
+                <Link
                   className="btn btn--play film-card__button"
                   type="button"
+                  to={`/player/${mainFilm.id}`}
                 >
                   <svg viewBox="0 0 19 19" width="19" height="19">
                     <use href="#play-s"></use>
                   </svg>
                   <span>Play</span>
-                </button>
+                </Link>
                 <button
                   className="btn btn--list film-card__button"
                   type="button"

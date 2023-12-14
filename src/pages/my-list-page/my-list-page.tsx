@@ -3,12 +3,15 @@ import { AppRoute, AuthorizationStatus } from '../../const';
 import { FilmCards } from '../../components/film-cards/film-cards';
 //import { useAppSelector } from '../../hooks';
 import { UserBlock } from '../../components/user-block/user-block.tsx';
-import { FilmCardType } from '../../types/films.ts';
+import { getUserFilms } from '../../store/film-data/selectors.ts';
+import { useAppSelector } from '../../hooks';
+
 type MyListPageProps = {
   authorizationStatus: AuthorizationStatus;
 };
 function MyListPage({ authorizationStatus }: MyListPageProps): JSX.Element {
-  const films: FilmCardType[] = []; //useAppSelector((state) => getUserFilms);
+  const films = useAppSelector(getUserFilms);
+
   return (
     <div className="user-page">
       <header className="page-header user-page__head">
@@ -21,7 +24,7 @@ function MyListPage({ authorizationStatus }: MyListPageProps): JSX.Element {
         </div>
 
         <h1 className="page-title user-page__title">
-          My list <span className="user-page__film-count">9</span>
+          My list <span className="user-page__film-count">{films.length}</span>
         </h1>
         <UserBlock authorizationStatus={authorizationStatus} />
       </header>

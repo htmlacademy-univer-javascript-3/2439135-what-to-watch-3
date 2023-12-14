@@ -14,6 +14,7 @@ import {
   increaseFilmsCount,
   setFilmsDisplayed,
 } from '../../store/film-data/film-data.ts';
+import { Link } from 'react-router-dom';
 type WelcomePageProps = {
   promoFilm: PromoFilmType | null;
   authorizationStatus: AuthorizationStatus;
@@ -30,7 +31,11 @@ function WelcomePage({
   const navigate = useNavigate();
   const userFilms = []; //useAppSelector(getUserFilms);
   const onCliclMyListHandler = () => {
-    navigate(AppRoute.MyList);
+    if (authorizationStatus === AuthorizationStatus.Auth) {
+      navigate(AppRoute.MyList);
+    } else {
+      navigate(AppRoute.Login);
+    }
   };
 
   return (
@@ -73,15 +78,16 @@ function WelcomePage({
               </p>
 
               <div className="film-card__buttons">
-                <button
+                <Link
                   className="btn btn--play film-card__button"
                   type="button"
+                  to={`/player/${promoFilm?.id || ''}`}
                 >
                   <svg viewBox="0 0 19 19" width="19" height="19">
                     <use href="#play-s"></use>
                   </svg>
                   <span>Play</span>
-                </button>
+                </Link>
                 <button
                   className="btn btn--list film-card__button"
                   type="button"
