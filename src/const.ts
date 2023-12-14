@@ -73,3 +73,8 @@ export const tabItems: TabItem[] = [
   TabItem.Details,
   TabItem.Reviews,
 ];
+export enum NameSpace {
+  Data = 'DATA',
+  Film = 'FILM',
+  User = 'USER',
+}

@@ -1,15 +1,16 @@
 import { genres } from '../../const';
 import { useAppDispatch, useAppSelector } from '../../hooks';
+
+import { getGenre } from '../../store/film-data/selectors';
 import {
-  setGenre,
-  setCount,
   setFilmsByGenre,
   setFilmsDisplayed,
-} from '../../store/action.ts';
-
+  setGenre,
+  resetFilmsCount,
+} from '../../store/film-data/film-data';
 export function GenresList(): JSX.Element {
   const dispatch = useAppDispatch();
-  const genre = useAppSelector((state) => state.genre);
+  const genre = useAppSelector(getGenre);
   return (
     <ul className="catalog__genres-list">
       {genres.map((filmGenre) => (
@@ -25,7 +26,7 @@ export function GenresList(): JSX.Element {
             onClick={() => {
               dispatch(setGenre({ genre: filmGenre }));
               dispatch(setFilmsByGenre());
-              dispatch(setCount({ count: 8 }));
+              dispatch(resetFilmsCount());
               dispatch(setFilmsDisplayed());
             }}
           >

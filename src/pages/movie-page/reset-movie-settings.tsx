@@ -1,15 +1,10 @@
 import { useAppDispatch } from '../../hooks';
-import {
-  setFilmsDisplayed,
-  setCount,
-  setGenre,
-  setFilmsByGenre,
-} from '../../store/action';
+import {setFilmsByGenre,setGenre, setFilmsDisplayed, resetFilmsCount} from '../../store/film-data/film-data';
 import { Genre } from '../../const';
 export function ResetMovieSettings() {
   const dispatch = useAppDispatch();
   dispatch(setGenre({ genre: Genre.All }));
-  dispatch(setCount({ count: 8 }));
+  dispatch(resetFilmsCount());
   dispatch(setFilmsByGenre());
   dispatch(setFilmsDisplayed());
 }

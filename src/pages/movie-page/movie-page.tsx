@@ -12,26 +12,29 @@ import {
 import { useEffect } from 'react';
 import { NotFoundPage } from '../not-found-page/not-found-page';
 import { ResetMovieSettings } from './reset-movie-settings';
-import {
-  setSimilarFilmsCount,
-  setSimilarFilmsDisplayed,
-} from '../../store/action.ts';
+
 import { AuthorizationStatus } from '../../const';
 import { UserBlock } from '../../components/user-block/user-block.tsx';
 type MoviePageProps = {
   authorizationStatus: AuthorizationStatus;
 };
+import {
+  getFilm,
+  getSimilarFilms,
+  getComments, getSimilarFilmsCount
+} from '../../store/film-data/selectors.ts';
 
+import {
+  setSimilarFilmsDisplayed, increaseSimilarFilmsCount
+} from '../../store/film-data/film-data.ts';
 function MoviePage({ authorizationStatus }: MoviePageProps): JSX.Element {
   const { id } = useParams();
   const dispatch = useAppDispatch();
-  const mainFilm = useAppSelector((state) => state.film);
-  const similarFilms = useAppSelector((state) => state.similarFilms);
-  const comments = useAppSelector((state) => state.comments);
-  const countDisplayedFilms = useAppSelector(
-    (state) => state.similarFilmsCount
-  );
-  const userListFilms = useAppSelector((state) => state.userListFilms);
+  const mainFilm = useAppSelector(getFilm);
+  const similarFilms = useAppSelector(getSimilarFilms);
+  const comments = useAppSelector(getComments);
+  const countDisplayedFilms = useAppSelector(getSimilarFilmsCount);
+  const userListFilms = []; //useAppSelector(getUserFilms);
   const navigate = useNavigate();
   const onCliclMyListHandler = () => {
     navigate(AppRoute.MyList);
@@ -146,7 +149,7 @@ function MoviePage({ authorizationStatus }: MoviePageProps): JSX.Element {
                 className="catalog__button"
                 type="button"
                 onClick={() => {
-                  dispatch(setSimilarFilmsCount(countDisplayedFilms + 8));
+                  dispatch(increaseSimilarFilmsCount());
                   dispatch(setSimilarFilmsDisplayed());
                 }}
               >

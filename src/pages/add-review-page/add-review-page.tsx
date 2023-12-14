@@ -1,17 +1,13 @@
-import { Helmet } from 'react-helmet-async';
 import { Link } from 'react-router-dom';
 import { AppRoute } from '../../const';
 import { AddReviewForm } from '../../components/add-review-form/add-review-form';
 import { Logo } from '../../components/logo/logo';
 import { useAppSelector } from '../../hooks/index';
-
+import { getFilm } from '../../store/film-data/selectors';
 function AddReviewPage(): JSX.Element {
-  const film = useAppSelector((state) => state.film);
+  const film = useAppSelector(getFilm);
   return (
     <section className="film-card film-card--full">
-      <Helmet>
-        <title>Карточка фильма</title>
-      </Helmet>
       <div className="film-card__header">
         <div className="film-card__bg">
           <img src={film?.backgroundImage} alt={film?.name} />

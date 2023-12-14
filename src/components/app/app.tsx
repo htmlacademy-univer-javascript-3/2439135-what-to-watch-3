@@ -12,16 +12,19 @@ import PrivateRoute from '../private-route/private-route';
 import { useAppSelector } from '../../hooks';
 import Loading from '../../components/loading/loading';
 
+//import {filmsDataLoading, } from '../../store/film-process/selectors';
+import { getAuthorizationStatus } from '../../store/user-process/selectors.ts';
+import {
+  getFilmsDataLoadingStatus,
+  getPromoFilm,
+} from '../../store/film-data/selectors.ts';
 function App(): JSX.Element {
-  const isQuestionsDataLoading = useAppSelector(
-    (state) => state.isFilmsDataLoading
-  );
-  const authorizationStatus = useAppSelector(
-    (state) => state.authorizationStatus
-  );
-  const promoFilm = useAppSelector((state) => state.promoFilm);
+  const isFilmsDataLoading = useAppSelector(getFilmsDataLoadingStatus);
+  const authorizationStatus = useAppSelector(getAuthorizationStatus);
+  // alert(authorizationStatus);
+  const promoFilm = useAppSelector(getPromoFilm);
 
-  if (isQuestionsDataLoading) {
+  if (isFilmsDataLoading) {
     return <Loading />;
   }
   return (

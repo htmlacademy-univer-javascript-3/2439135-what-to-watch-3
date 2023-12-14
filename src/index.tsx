@@ -5,15 +5,16 @@ import { Provider } from 'react-redux';
 import {
   fetchFilmsAction,
   fetchPromoFilmAction,
-  fetchUserListAction,
+  //fetchUserListAction,
 } from './store/api-actions';
+
 import ErrorMessage from './components/error-message/error-message';
 import { checkAuthAction } from './store/api-actions';
 
 store.dispatch(checkAuthAction());
 store.dispatch(fetchFilmsAction());
 store.dispatch(fetchPromoFilmAction());
-store.dispatch(fetchUserListAction());
+//store.dispatch(fetchUserListAction());
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );

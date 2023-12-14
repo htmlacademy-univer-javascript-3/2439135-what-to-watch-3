@@ -3,12 +3,13 @@ import { useNavigate } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../hooks/index';
 import { sendCommentAction } from '../../store/api-actions';
 import { NotFoundPage } from '../../pages/not-found-page/not-found-page';
+import { getFilm } from '../../store/film-data/selectors.ts';
 
 export function AddReviewForm(): JSX.Element {
   const [userRayting, setUserRayting] = useState(0);
   const commentRef = useRef<HTMLTextAreaElement>(null);
   const navigate = useNavigate();
-  const film = useAppSelector((state) => state.film);
+  const film = useAppSelector(getFilm);
   const dispatch = useAppDispatch();
 
   if (!film) {
@@ -19,7 +20,7 @@ export function AddReviewForm(): JSX.Element {
   };
 
   const onSubmitHandler = (rating: number, comment: string) => {
-    dispatch(sendCommentAction({ id: film.id, rating, comment }));
+    dispatch(sendCommentAction({ comment:comment, rating:rating, id: film.id }));
     navigate(`/films/${film.id}`);
   };
 

@@ -1,14 +1,14 @@
 import { Link } from 'react-router-dom';
-import { AppRoute } from '../../const';
+import { AppRoute, AuthorizationStatus } from '../../const';
 import { FilmCards } from '../../components/film-cards/film-cards';
-import { useAppSelector } from '../../hooks';
+//import { useAppSelector } from '../../hooks';
 import { UserBlock } from '../../components/user-block/user-block.tsx';
-import { AuthorizationStatus } from '../../const';
+import { FilmCardType } from '../../types/films.ts';
 type MyListPageProps = {
   authorizationStatus: AuthorizationStatus;
 };
 function MyListPage({ authorizationStatus }: MyListPageProps): JSX.Element {
-  const films = useAppSelector((state) => state.userListFilms);
+  const films: FilmCardType[] = []; //useAppSelector((state) => getUserFilms);
   return (
     <div className="user-page">
       <header className="page-header user-page__head">
