@@ -4,17 +4,19 @@ import { ReviewCard } from '../review-card/review-card.tsx';
 
 type TabReviewsProps = {
   film: FilmType;
-  comments:Comment[];
+  comments: Comment[];
 };
 
 export function TabReviews({ film, comments }: TabReviewsProps): JSX.Element {
   const rewievsCount = comments.length;
   return (
-    <div className="film-card__reviews film-card__row">
+    <div className="film-card__reviews film-card__row" data-testid="reviews">
       <div className="film-card__reviews-col">
-        {comments.slice(0, Math.trunc((rewievsCount + 1) / 2)).map((comment) => (
-          <ReviewCard key={film.id} rewiev={comment} />
-        ))}
+        {comments
+          .slice(0, Math.trunc((rewievsCount + 1) / 2))
+          .map((comment) => (
+            <ReviewCard key={film.id} rewiev={comment} />
+          ))}
       </div>
       <div className="film-card__reviews-col">
         {comments
@@ -26,3 +28,4 @@ export function TabReviews({ film, comments }: TabReviewsProps): JSX.Element {
     </div>
   );
 }
+export default TabReviews;

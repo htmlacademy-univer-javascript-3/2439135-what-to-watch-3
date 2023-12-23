@@ -11,7 +11,7 @@ export function UserBlockAuth(): JSX.Element {
     navigate(AppRoute.Main);
   };
   return (
-    <ul className="user-block">
+    <ul className="user-block" data-testid="user-block-auth">
       <li className="user-block__item">
         <div className="user-block__avatar">
           <img src="img/avatar.jpg" alt="User avatar" width="63" height="63" />

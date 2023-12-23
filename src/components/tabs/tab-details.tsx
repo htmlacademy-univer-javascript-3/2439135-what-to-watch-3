@@ -6,7 +6,7 @@ type TabDetailsProps = {
 
 export function TabDetails({ film }: TabDetailsProps): JSX.Element {
   return (
-    <div className="film-card__text film-card__row">
+    <div className="film-card__text film-card__row" data-testid="details">
       <div className="film-card__text-col">
         <p className="film-card__details-item">
           <strong className="film-card__details-name">Director</strong>
@@ -41,3 +41,4 @@ export function TabDetails({ film }: TabDetailsProps): JSX.Element {
     </div>
   );
 }
+export default TabDetails;

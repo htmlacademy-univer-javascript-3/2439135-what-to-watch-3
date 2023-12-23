@@ -4,14 +4,20 @@ import { FilmCards } from '../../components/film-cards/film-cards';
 //import { useAppSelector } from '../../hooks';
 import { UserBlock } from '../../components/user-block/user-block.tsx';
 import { getUserFilms } from '../../store/film-data/selectors.ts';
-import { useAppSelector } from '../../hooks';
-
+import { useAppSelector, useAppDispatch } from '../../hooks';
+import { fetchUserListAction } from '../../store/api-actions.ts';
+import { useEffect } from 'react';
 type MyListPageProps = {
   authorizationStatus: AuthorizationStatus;
 };
-function MyListPage({ authorizationStatus }: MyListPageProps): JSX.Element {
+function MyListPage({
+  authorizationStatus,
+}: MyListPageProps): JSX.Element {
   const films = useAppSelector(getUserFilms);
-
+  const dispatch = useAppDispatch();
+  useEffect(() => {
+    dispatch(fetchUserListAction());
+  }, [dispatch]);
   return (
     <div className="user-page">
       <header className="page-header user-page__head">

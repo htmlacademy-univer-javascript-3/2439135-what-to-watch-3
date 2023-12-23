@@ -1,11 +1,11 @@
-import type { FilmCardType } from '../../types/films.ts';
+import type { FilmCardType, FilmType } from '../../types/films.ts';
 import { Link } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { VideoPlayer } from '../../components/video-player/video-player.tsx';
 import { timeoutVideo } from '../../const';
 
 type FilmCardProps = {
-  film: FilmCardType;
+  film: FilmType | FilmCardType;
 };
 
 export function FilmCard({ film }: FilmCardProps): JSX.Element {
@@ -34,6 +34,7 @@ export function FilmCard({ film }: FilmCardProps): JSX.Element {
   };
   return (
     <Link
+      data-testid="film-card"
       className="small-film-card__link small-film-card catalog__films-card"
       to={`/films/${film.id}`}
       onMouseEnter={handleMouseEnter}

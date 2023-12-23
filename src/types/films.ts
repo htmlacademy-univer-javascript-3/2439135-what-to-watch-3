@@ -15,6 +15,8 @@ export type FilmType = {
   genre: Genre;
   released: number;
   isFavorite: boolean;
+  previewImage: string;
+  previewVideoLink: string;
 };
 
 export type FilmCardType = {

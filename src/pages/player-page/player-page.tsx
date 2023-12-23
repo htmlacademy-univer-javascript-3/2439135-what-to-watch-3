@@ -1,10 +1,10 @@
 import { useEffect, useState, useRef, ChangeEvent } from 'react';
-import { useParams, useNavigate } from 'react-router';
+import { useParams } from 'react-router';
 import { useAppSelector, useAppDispatch } from '../../hooks/index.ts';
 import { getFilm } from '../../store/film-data/selectors.ts';
 import { fetchFilmAction } from '../../store/api-actions.ts';
-import { AppRoute } from '../../const.ts';
-
+import { PlayButton } from '../../components/player-button/play-button.tsx';
+import { ExitButton } from '../../components/player-button/exit-button.tsx';
 function PlayerPage(): JSX.Element {
   const { id } = useParams();
   const dispatch = useAppDispatch();
@@ -12,35 +12,66 @@ function PlayerPage(): JSX.Element {
   const [isPlaying, setIsPlaying] = useState(false);
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const [currentTime, setCurrentTime] = useState(0);
-  const navigate = useNavigate();
-  const [duration, setDuration] = useState(0);
+  const [playingProgress, setPlayingProgress] = useState(0);
+  const progressRef = useRef(null);
+  useEffect(() => {
+    if (id) {
+      dispatch(fetchFilmAction(id));
+    }
+  }, [dispatch, id]);
+
+  const handleUpdateProgress = (evt: ChangeEvent<HTMLVideoElement>) => {
+    const time = Math.round(
+      evt.currentTarget.duration - evt.currentTarget.currentTime
+    );
+    if (time !== undefined) {
+      setCurrentTime(time);
+      setPlayingProgress(
+        (evt.currentTarget?.currentTime * 100) / evt.currentTarget?.duration
+      );
+      if (evt.currentTarget?.ended) {
+        setIsPlaying(false);
+        videoRef.current?.pause();
+      }
+    }
+  };
+
   useEffect(() => {
     const playerElement = videoRef.current;
     if (!playerElement) {
       return;
     }
     if (!isPlaying) {
-      playerElement.load();
       playerElement.pause();
       return;
     }
     playerElement.play();
   }, [isPlaying]);
 
+  const formatTime = () => {
+    const padStart = (time: number) => `${Math.floor(time)}`.padStart(2, '0');
+    const hours = padStart(currentTime / 360);
+    const minutes = padStart(currentTime / 60 - Number.parseInt(hours, 10) * 60);
+    const seconds = padStart(currentTime % 60);
+    const minuteSection = `-${minutes}:${seconds}`;
+    const hourSection = `-${hours}:${minutes}:${seconds}`;
+    if (hours === '00') {
+      return minuteSection;
+    }
+    return hourSection;
+  };
+  const playHandler = () => {
+    if (videoRef.current) {
+      setIsPlaying(!isPlaying);
+    }
+  };
+
   useEffect(() => {
     if (id) {
       dispatch(fetchFilmAction(id));
     }
   }, [dispatch, id]);
-  const timeLeft = duration - currentTime;
-  const handleUpdateProgress = (evt: ChangeEvent<HTMLVideoElement>) => {
-    const time = Math.round(evt.currentTarget.currentTime);
-    setCurrentTime(time);
-  };
-  const handleDurationChange = (evt: ChangeEvent<HTMLVideoElement>) => {
-    const currentDuration = Math.round(evt.currentTarget.duration);
-    setDuration(currentDuration);
-  };
+
   return (
     <div className="player">
       <video
@@ -49,18 +80,11 @@ function PlayerPage(): JSX.Element {
         poster={film?.backgroundImage}
         ref={videoRef}
         muted={false}
-        onDurationChange={handleDurationChange}
         onTimeUpdate={handleUpdateProgress}
       >
       </video>
 
-      <button
-        type="button"
-        className="player__exit"
-        onClick={() => navigate(AppRoute.Main)}
-      >
-        Exit
-      </button>
+      <ExitButton />
 
       <div className="player__controls">
         <div className="player__controls-row">
@@ -69,33 +93,29 @@ function PlayerPage(): JSX.Element {
               className="player__progress"
               value={videoRef.current?.currentTime}
               max={videoRef.current?.duration}
+              ref={progressRef}
             >
             </progress>
-            <div className="player__toggler" style={{ left: '30%' }}>
+            <div
+              className="player__toggler"
+              style={{ left: `${playingProgress}%` }}
+            >
               Toggler
             </div>
           </div>
-          <div className="player__time-value">{timeLeft}</div>
+          <div className="player__time-value">{formatTime()}</div>
         </div>
 
         <div className="player__controls-row">
-          <button
-            type="button"
-            className="player__play"
-            onClick={() =>
-              setIsPlaying ? setIsPlaying(!isPlaying) : undefined}
-          >
-            <svg viewBox="0 0 19 19" width="19" height="19">
-              <use href="#play-s"></use>
-            </svg>
-            <span>Play</span>
-          </button>
+          <PlayButton onClickHandler={playHandler} isPlaying={isPlaying} />
           <div className="player__name">Transpotting</div>
 
           <button
             type="button"
             className="player__full-screen"
-
+            onClick={() => {
+              videoRef.current?.requestFullscreen();
+            }}
           >
             <svg viewBox="0 0 27 27" width="27" height="27">
               <use href="#full-screen"></use>

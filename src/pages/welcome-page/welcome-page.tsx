@@ -1,10 +1,10 @@
 import { FilmCards } from '../../components/film-cards/film-cards';
-import { PromoFilmType } from '../../types/films';
+import { FilmType } from '../../types/films';
 import { useAppSelector, useAppDispatch } from '../../hooks';
 import { GenresList } from '../../components/genres-list/genres-list.tsx';
-import { AuthorizationStatus, AppRoute } from '../../const';
+import { AuthorizationStatus } from '../../const';
 import { UserBlock } from '../../components/user-block/user-block.tsx';
-import { useNavigate } from 'react-router';
+
 import {
   getFilmsCount,
   getFilmsByGenre,
@@ -15,8 +15,10 @@ import {
   setFilmsDisplayed,
 } from '../../store/film-data/film-data.ts';
 import { Link } from 'react-router-dom';
+import { AddToFavorite } from '../../components/add-to-favorite/add-to-favorite.tsx';
+
 type WelcomePageProps = {
-  promoFilm: PromoFilmType | null;
+  promoFilm: FilmType | null;
   authorizationStatus: AuthorizationStatus;
 };
 
@@ -28,15 +30,7 @@ function WelcomePage({
   const countDisplayedFilms = useAppSelector(getFilmsCount);
   const filmsByGenre = useAppSelector(getFilmsByGenre);
   const films = useAppSelector(getFilmsDisplayed);
-  const navigate = useNavigate();
-  const userFilms = []; //useAppSelector(getUserFilms);
-  const onCliclMyListHandler = () => {
-    if (authorizationStatus === AuthorizationStatus.Auth) {
-      navigate(AppRoute.MyList);
-    } else {
-      navigate(AppRoute.Login);
-    }
-  };
+
 
   return (
     <>
@@ -88,17 +82,12 @@ function WelcomePage({
                   </svg>
                   <span>Play</span>
                 </Link>
-                <button
-                  className="btn btn--list film-card__button"
-                  type="button"
-                  onClick={onCliclMyListHandler}
-                >
-                  <svg viewBox="0 0 19 20" width="19" height="20">
-                    <use href="#add"></use>
-                  </svg>
-                  <span>My list</span>
-                  <span className="film-card__count">{userFilms.length}</span>
-                </button>
+                <AddToFavorite
+                  authorizationStatus={authorizationStatus}
+                  isFavorite={promoFilm?.isFavorite || false}
+
+                  id={promoFilm?.id || ''}
+                />
               </div>
             </div>
           </div>

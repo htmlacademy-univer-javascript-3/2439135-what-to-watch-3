@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom';
 import { AppRoute } from '../../const';
 import { FilmCards } from '../../components/film-cards/film-cards';
 import { Tabs } from '../../components/tabs/tabs';
-import { useParams, useNavigate } from 'react-router';
+import { useParams } from 'react-router';
 import { useAppSelector, useAppDispatch } from '../../hooks';
 import {
   fetchFilmAction,
@@ -12,7 +12,6 @@ import {
 import { useEffect } from 'react';
 import { NotFoundPage } from '../not-found-page/not-found-page';
 import { ResetMovieSettings } from './reset-movie-settings';
-
 import { AuthorizationStatus } from '../../const';
 import { UserBlock } from '../../components/user-block/user-block.tsx';
 type MoviePageProps = {
@@ -24,7 +23,7 @@ import {
   getComments,
   getSimilarFilmsCount,
 } from '../../store/film-data/selectors.ts';
-
+import {AddToFavorite} from '../../components/add-to-favorite/add-to-favorite.tsx';
 import {
   setSimilarFilmsDisplayed,
   increaseSimilarFilmsCount,
@@ -36,15 +35,8 @@ function MoviePage({ authorizationStatus }: MoviePageProps): JSX.Element {
   const similarFilms = useAppSelector(getSimilarFilms);
   const comments = useAppSelector(getComments);
   const countDisplayedFilms = useAppSelector(getSimilarFilmsCount);
-  const userListFilms = []; //useAppSelector(getUserFilms);
-  const navigate = useNavigate();
-  const onCliclMyListHandler = () => {
-    if (authorizationStatus === AuthorizationStatus.Auth) {
-      navigate(AppRoute.MyList);
-    } else {
-      navigate(AppRoute.Login);
-    }
-  };
+
+
   useEffect(() => {
     if (id) {
       dispatch(fetchFilmAction(id));
@@ -103,19 +95,7 @@ function MoviePage({ authorizationStatus }: MoviePageProps): JSX.Element {
                   </svg>
                   <span>Play</span>
                 </Link>
-                <button
-                  className="btn btn--list film-card__button"
-                  type="button"
-                  onClick={onCliclMyListHandler}
-                >
-                  <svg viewBox="0 0 19 20" width="19" height="20">
-                    <use href="#add"></use>
-                  </svg>
-                  <span>My list</span>
-                  <span className="film-card__count">
-                    {userListFilms.length}
-                  </span>
-                </button>
+                <AddToFavorite authorizationStatus={authorizationStatus} id={mainFilm.id} isFavorite={mainFilm.isFavorite}/>
                 {authorizationStatus === AuthorizationStatus.Auth && (
                   <Link
                     to={AppRoute.AddReview}
