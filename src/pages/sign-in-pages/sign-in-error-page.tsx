@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
-import { AppRoute } from '../../../const';
+import { AppRoute } from '../../const';
 
-function SignInMessagePage(): JSX.Element {
+function SignInErrorPage(): JSX.Element {
   return (
     <div className="user-page">
       <header className="page-header user-page__head">
@@ -19,13 +19,10 @@ function SignInMessagePage(): JSX.Element {
       <div className="sign-in user-page__content">
         <form action="#" className="sign-in__form">
           <div className="sign-in__message">
-            <p>
-              We can’t recognize this email <br /> and password combination.
-              Please try again.
-            </p>
+            <p>Please enter a valid email address</p>
           </div>
           <div className="sign-in__fields">
-            <div className="sign-in__field">
+            <div className="sign-in__field sign-in__field--error">
               <input
                 className="sign-in__input"
                 type="email"
@@ -66,7 +63,7 @@ function SignInMessagePage(): JSX.Element {
 
       <footer className="page-footer">
         <div className="logo">
-          <Link to={AppRoute.Main} className="logo__link logo__link--light">
+          <Link to={AppRoute.Main} className="logo__link">
             <span className="logo__letter logo__letter--1">W</span>
             <span className="logo__letter logo__letter--2">T</span>
             <span className="logo__letter logo__letter--3">W</span>
@@ -81,4 +78,4 @@ function SignInMessagePage(): JSX.Element {
   );
 }
 
-export default SignInMessagePage;
+export default SignInErrorPage;

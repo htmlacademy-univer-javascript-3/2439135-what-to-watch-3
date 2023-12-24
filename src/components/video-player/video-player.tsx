@@ -28,6 +28,7 @@ export function VideoPlayer({
   }, [isPlaying]);
   return (
     <video
+      data-testid="video-player"
       width="280"
       height="175"
       ref={videoRef}
@@ -37,3 +38,5 @@ export function VideoPlayer({
     />
   );
 }
+
+export default VideoPlayer;

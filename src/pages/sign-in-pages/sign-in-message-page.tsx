@@ -1,34 +1,7 @@
 import { Link } from 'react-router-dom';
-import { AppRoute } from '../../../const';
-import { useRef, FormEvent } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { useAppDispatch, useAppSelector } from '../../../hooks';
-import { loginAction } from '../../../store/api-actions';
-import { AuthorizationStatus } from '../../../const';
-import { getAuthorizationStatus } from '../../../store/user-process/selectors';
-function SignInPage(): JSX.Element {
-  const loginRef = useRef<HTMLInputElement | null>(null);
-  const passwordRef = useRef<HTMLInputElement | null>(null);
-  const authorizationStatus = useAppSelector(getAuthorizationStatus);
-  const dispatch = useAppDispatch();
-  const navigate = useNavigate();
+import { AppRoute } from '../../const';
 
-  const handleSubmit = (evt: FormEvent<HTMLFormElement>) => {
-    evt.preventDefault();
-
-    if (loginRef.current !== null && passwordRef.current !== null) {
-      dispatch(
-        loginAction({
-          login: loginRef.current.value,
-          password: passwordRef.current.value,
-        })
-      );
-    }
-    if (authorizationStatus === AuthorizationStatus.Auth) {
-      navigate(AppRoute.Main);
-    }
-  };
-
+function SignInMessagePage(): JSX.Element {
   return (
     <div className="user-page">
       <header className="page-header user-page__head">
@@ -44,14 +17,19 @@ function SignInPage(): JSX.Element {
       </header>
 
       <div className="sign-in user-page__content">
-        <form action="#" className="sign-in__form" onSubmit={handleSubmit}>
+        <form action="#" className="sign-in__form">
+          <div className="sign-in__message">
+            <p>
+              We can’t recognize this email <br /> and password combination.
+              Please try again.
+            </p>
+          </div>
           <div className="sign-in__fields">
             <div className="sign-in__field">
               <input
-                ref={loginRef}
                 className="sign-in__input"
-                placeholder="Email address"
                 type="email"
+                placeholder="Email address"
                 name="user-email"
                 id="user-email"
               />
@@ -64,10 +42,9 @@ function SignInPage(): JSX.Element {
             </div>
             <div className="sign-in__field">
               <input
-                ref={passwordRef}
                 className="sign-in__input"
-                placeholder="Password"
                 type="password"
+                placeholder="Password"
                 name="user-password"
                 id="user-password"
               />
@@ -104,4 +81,4 @@ function SignInPage(): JSX.Element {
   );
 }
 
-export default SignInPage;
+export default SignInMessagePage;

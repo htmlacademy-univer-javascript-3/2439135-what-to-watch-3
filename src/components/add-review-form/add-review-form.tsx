@@ -25,7 +25,7 @@ export function AddReviewForm(): JSX.Element {
   };
 
   return (
-    <form
+    <form data-testid="form"
       action="#"
       className="add-review__form"
       onSubmit={(evt: FormEvent<HTMLFormElement>) => {
@@ -39,7 +39,7 @@ export function AddReviewForm(): JSX.Element {
         <div className="rating__stars">
           {[10, 9, 8, 7, 6, 5, 4, 3, 2, 1].map((num) => (
             <>
-              <input
+              <input data-testid="star"
                 className="rating__input"
                 id={`star-${num}`}
                 type="radio"
@@ -56,7 +56,7 @@ export function AddReviewForm(): JSX.Element {
       </div>
 
       <div className="add-review__text">
-        <textarea
+        <textarea data-testid="comment"
           ref={commentRef}
           className="add-review__textarea"
           name="review-text"
@@ -77,3 +77,4 @@ export function AddReviewForm(): JSX.Element {
     </form>
   );
 }
+export default AddReviewForm;

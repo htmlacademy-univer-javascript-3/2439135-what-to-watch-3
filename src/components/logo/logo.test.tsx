@@ -7,6 +7,6 @@ describe('Component: Logo', () => {
     const preparedComponent = withHistory(<Logo />);
     render(preparedComponent);
     expect(screen.getByTestId('logo')).toBeInTheDocument();
-    expect(screen.getAllByTestId('letter').length).toEqual(3);
+    expect(screen.getAllByTestId('letter').length).toBe(3);
   });
 });

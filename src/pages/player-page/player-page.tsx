@@ -74,7 +74,7 @@ function PlayerPage(): JSX.Element {
 
   return (
     <div className="player">
-      <video
+      <video data-testid="video"
         src={film?.videoLink}
         className="player__video"
         poster={film?.backgroundImage}

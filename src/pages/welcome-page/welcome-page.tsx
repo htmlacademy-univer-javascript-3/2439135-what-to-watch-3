@@ -85,7 +85,6 @@ function WelcomePage({
                 <AddToFavorite
                   authorizationStatus={authorizationStatus}
                   isFavorite={promoFilm?.isFavorite || false}
-
                   id={promoFilm?.id || ''}
                 />
               </div>

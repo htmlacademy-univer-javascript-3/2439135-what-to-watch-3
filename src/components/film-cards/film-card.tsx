@@ -50,3 +50,4 @@ export function FilmCard({ film }: FilmCardProps): JSX.Element {
     </Link>
   );
 }
+export default FilmCard;

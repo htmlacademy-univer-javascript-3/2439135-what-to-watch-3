@@ -8,7 +8,7 @@ export function PlayButton({
   isPlaying,
 }: PlayButtonProps): JSX.Element {
   return (
-    <button type="button" className="player__play" onClick={onClickHandler}>
+    <button type="button" className="player__play" onClick={onClickHandler} data-testid="player__play">
       {!isPlaying ? (
         <>
           <svg viewBox="0 0 19 19" width="19" height="19">

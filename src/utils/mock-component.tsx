@@ -9,16 +9,12 @@ import thunk from 'redux-thunk';
 import { Action } from 'redux';
 import { AppThunkDispatch } from './mocks';
 import { Provider } from 'react-redux';
-
-
 export function withHistory(component: JSX.Element, history?: MemoryHistory) {
   const memoryHistory = history ?? createMemoryHistory();
 
   return (
     <HistoryRouter history={memoryHistory}>
-      <HelmetProvider>
-        {component}
-      </HelmetProvider>
+      <HelmetProvider>{component}</HelmetProvider>
     </HistoryRouter>
   );
 }

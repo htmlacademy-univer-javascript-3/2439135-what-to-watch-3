@@ -19,10 +19,8 @@ type AddToFavoriteProps = {
 export function AddToFavorite({
   id,
   authorizationStatus,
-
   isFavorite,
 }: AddToFavoriteProps): JSX.Element {
-
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const promoFilm = useAppSelector(getPromoFilm);
@@ -38,10 +36,8 @@ export function AddToFavorite({
     };
   }, [dispatch, isFavorite]);
 
-
   const onCliclMyListHandler = () => {
     if (authorizationStatus === AuthorizationStatus.Auth) {
-
       dispatch(addFilmInFavorite({ filmId: id, status: !isFavorite }));
       dispatch(fetchFilmAction(id));
       dispatch(fetchUserListAction());
@@ -55,7 +51,6 @@ export function AddToFavorite({
       navigate(AppRoute.Login);
     }
   };
-
 
   return (
     <button
@@ -75,7 +70,6 @@ export function AddToFavorite({
       <span>My list</span>
       <span className="film-card__count">{userFilms.length}</span>
     </button>
-
   );
-
 }
+export default AddToFavorite;

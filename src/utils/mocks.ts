@@ -1,4 +1,3 @@
-import {} from '../const';
 import { FilmType, FilmCardType } from '../types/films';
 import { Comment } from '../types/reviews';
 import { State } from '../types/state';
@@ -6,7 +5,7 @@ import { datatype, date, image, internet, lorem, name } from 'faker';
 import { ThunkDispatch } from 'redux-thunk';
 import { createAPI } from '../services/api';
 import { Action } from 'redux';
-import { AuthorizationStatus, Genre } from '../const.ts';
+import { AuthorizationStatus, Genre, NameSpace } from '../const.ts';
 
 export type AppThunkDispatch = ThunkDispatch<
   State,
@@ -19,7 +18,6 @@ export const makeFakeGenre = (): Genre => {
   const genres: Genre[] = [
     Genre.Action,
     Genre.Adventure,
-    Genre.All,
     Genre.Comedie,
     Genre.Crime,
     Genre.Documentary,
@@ -30,7 +28,7 @@ export const makeFakeGenre = (): Genre => {
     Genre.Romance,
     Genre.SciFi,
   ];
-  return genres.at(getRandom(0, genres.length - 1)) || Genre.All;
+  return genres.at(getRandom(0, genres.length - 1)) || Genre.Adventure;
 };
 export const extractActionsTypes = (actions: Action<string>[]) =>
   actions.map(({ type }) => type);
@@ -115,8 +113,8 @@ export const makeFakeComments = () =>
   );
 
 export const makeFakeStore = (initialState?: Partial<State>): State => ({
-  USER: { authorizationStatus: AuthorizationStatus.NoAuth },
-  DATA: {
+  [NameSpace.User]: { authorizationStatus: AuthorizationStatus.Auth },
+  [NameSpace.Data]: {
     genre: Genre.All,
     films: [],
     filmsDisplayed: [],
@@ -125,7 +123,7 @@ export const makeFakeStore = (initialState?: Partial<State>): State => ({
     genreFilmsCount: 8,
     similarFilmsCount: 8,
     promoFilm: null,
-    film: null,
+    film: makeFakeFilm(),
     similarFilms: [],
     comments: [],
     userListFilms: [],

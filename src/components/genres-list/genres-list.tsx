@@ -1,6 +1,4 @@
 import { genres } from '../../const';
-import { useAppDispatch, useAppSelector } from '../../hooks';
-
 import { getGenre } from '../../store/film-data/selectors';
 import {
   setFilmsByGenre,
@@ -8,6 +6,7 @@ import {
   setGenre,
   resetFilmsCount,
 } from '../../store/film-data/film-data';
+import { useAppDispatch, useAppSelector } from '../../hooks';
 export function GenresList(): JSX.Element {
   const dispatch = useAppDispatch();
   const genre = useAppSelector(getGenre);
@@ -15,8 +14,9 @@ export function GenresList(): JSX.Element {
     <ul className="catalog__genres-list">
       {genres.map((filmGenre) => (
         <li
+          data-testid="genre"
           className={`catalog__genres-item
-                ${
+                 ${
         (filmGenre === genre && 'catalog__genres-item--active') || ''
         }`}
           key={filmGenre}
@@ -37,3 +37,4 @@ export function GenresList(): JSX.Element {
     </ul>
   );
 }
+export default GenresList;

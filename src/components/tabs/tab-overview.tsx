@@ -4,7 +4,7 @@ import { getComments } from '../../store/film-data/selectors.ts';
 type TabOverviewProps = {
   film: FilmType;
 };
-function GetTextRating(rating: number): string {
+export function GetTextRating(rating: number): string {
   if (rating >= 0 && rating < 3) {
     return 'Bad';
   } else if (rating >= 3 && rating < 5) {
@@ -44,3 +44,4 @@ export function TabOverview({ film }: TabOverviewProps): JSX.Element {
     </>
   );
 }
+export default TabOverview;

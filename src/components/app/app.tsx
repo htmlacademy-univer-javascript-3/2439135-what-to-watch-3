@@ -3,7 +3,7 @@ import { Route, Routes } from 'react-router-dom';
 import { HelmetProvider } from 'react-helmet-async';
 import { AppRoute } from '../../const';
 import MyListPage from '../../pages/my-list-page/my-list-page';
-import SignInPage from '../../pages/sign-in-pages/sign-in-page/sign-in-page';
+import SignInPage from '../../pages/sign-in-pages/sign-in-page.tsx';
 import MoviePage from '../../pages/movie-page/movie-page';
 import AddReviewPage from '../../pages/add-review-page/add-review-page';
 import PlayerPage from '../../pages/player-page/player-page.tsx';

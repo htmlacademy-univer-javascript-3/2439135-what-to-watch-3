@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 
 export function NotFoundPage(): JSX.Element {
   return (
-    <section className="game">
+    <section>
       <Helmet>
         <title>Страница не найдена</title>
       </Helmet>
