@@ -70,7 +70,6 @@ export const loginAction = createAsyncThunk<
     data: { token },
   } = await api.post<UserData>(APIRoute.Login(), { email, password });
   saveToken(token);
-  // dispatch(redirectToRoute(AppRoute.Result));
 });
 export const logoutAction = createAsyncThunk<
   void,
@@ -141,7 +140,6 @@ export const fetchUserListAction = createAsyncThunk<
   const { data } = await api.get<FilmType[]>('favorite');
   return data;
 });
-
 
 export const addFilmInFavorite = createAsyncThunk<
   FilmType,

@@ -1,7 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../hooks/index';
 import { AuthorizationStatus, AppRoute } from '../../const';
-
 import {
   addFilmInFavorite,
   fetchFilmAction,
@@ -45,8 +44,6 @@ export function AddToFavorite({
       if (promoFilm && promoFilm.id === id) {
         dispatch(fetchPromoFilmAction());
       }
-
-      //navigate(AppRoute.MyList);
     } else {
       navigate(AppRoute.Login);
     }
@@ -68,7 +65,11 @@ export function AddToFavorite({
         </svg>
       )}
       <span>My list</span>
-      <span className="film-card__count">{userFilms.length}</span>
+      <span className="film-card__count">
+        {authorizationStatus === AuthorizationStatus.Auth
+          ? userFilms.length
+          : 0}
+      </span>
     </button>
   );
 }

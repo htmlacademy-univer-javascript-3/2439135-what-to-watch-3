@@ -1,0 +1,6 @@
+.not-found {
+  position: fixed;
+  top: 50%;
+  left: 40%;
+  text-align: center;
+}

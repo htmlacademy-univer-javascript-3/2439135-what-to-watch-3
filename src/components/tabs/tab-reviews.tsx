@@ -8,21 +8,21 @@ type TabReviewsProps = {
 };
 
 export function TabReviews({ film, comments }: TabReviewsProps): JSX.Element {
-  const rewievsCount = comments.length;
+  const reviewsCount = comments.length;
   return (
     <div className="film-card__reviews film-card__row" data-testid="reviews">
       <div className="film-card__reviews-col">
         {comments
-          .slice(0, Math.trunc((rewievsCount + 1) / 2))
+          .slice(0, Math.trunc((reviewsCount + 1) / 2))
           .map((comment) => (
-            <ReviewCard key={film.id} rewiev={comment} />
+            <ReviewCard key={film.id} review={comment} />
           ))}
       </div>
       <div className="film-card__reviews-col">
         {comments
-          .slice(Math.trunc((rewievsCount + 1) / 2), rewievsCount)
+          .slice(Math.trunc((reviewsCount + 1) / 2), reviewsCount)
           .map((comment) => (
-            <ReviewCard key={film.id} rewiev={comment} />
+            <ReviewCard key={film.id} review={comment} />
           ))}
       </div>
     </div>

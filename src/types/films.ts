@@ -10,7 +10,7 @@ export type FilmType = {
   rating: number;
   scoresCount: number;
   director: string;
-  starring: [string];
+  starring: string[];
   runTime: number;
   genre: Genre;
   released: number;

@@ -18,7 +18,7 @@ export const APIRoute = {
     `/favorite/${filmId}/${status}`,
 };
 export const timeoutVideo = 1000;
-export const TIMEOUT_SHOW_ERROR = 2000;
+
 export enum AppRoute {
   Main = '/',
   Login = '/login',

@@ -42,13 +42,13 @@ describe('Component: Tabs', () => {
     it('should render correct', () => {
       const film = makeFakeFilm();
       const withHistoryComponent = withHistory(<TabOverview film={film} />);
-      const score = GetTextRating(film.rating);
+      const score = GetTextRating(0);
       const { withStoreComponent } = withStore(
         withHistoryComponent,
         makeFakeStore()
       );
       render(withStoreComponent);
-      expect(screen.getByText(film.rating)).toBeInTheDocument();
+      expect(screen.getByText('0')).toBeInTheDocument();
       expect(
         screen.getByText(`Director: ${film.director}`)
       ).toBeInTheDocument();

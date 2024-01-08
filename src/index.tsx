@@ -5,7 +5,6 @@ import { Provider } from 'react-redux';
 import {
   fetchFilmsAction,
   fetchPromoFilmAction,
-  //fetchUserListAction,
 } from './store/api-actions';
 import { HelmetProvider } from 'react-helmet-async';
 import { ToastContainer } from 'react-toastify';
@@ -16,7 +15,6 @@ import browserHistory from './browser-history';
 store.dispatch(checkAuthAction());
 store.dispatch(fetchFilmsAction());
 store.dispatch(fetchPromoFilmAction());
-//store.dispatch(fetchUserListAction());
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
@@ -32,5 +30,3 @@ root.render(
     </Provider>
   </React.StrictMode>
 );
-
-

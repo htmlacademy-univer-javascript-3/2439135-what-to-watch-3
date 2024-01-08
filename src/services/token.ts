@@ -12,6 +12,5 @@ export const saveToken = (token: Token): void => {
 };
 
 export const dropToken = (): void => {
-  //alert('droptoken');
   localStorage.removeItem(AUTH_TOKEN_KEY_NAME);
 };

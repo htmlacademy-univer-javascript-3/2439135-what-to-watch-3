@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { Genre, NameSpace } from '../../const.ts';
+import { AuthorizationStatus, Genre, NameSpace } from '../../const.ts';
 import { FilmData } from '../../types/state.ts';
 import { PayloadAction } from '@reduxjs/toolkit';
 import {
@@ -10,11 +10,9 @@ import {
   fetchPromoFilmAction,
   fetchSimilarFilmsAction,
   fetchUserListAction,
-
 } from '../api-actions.ts';
-
-export const InitialNumberFilms = 8;
-
+import {getAuthorizationStatus} from '../user-process/selectors.ts';
+import { useAppSelector } from '../../hooks/index.ts';
 const initialState: FilmData = {
   genre: Genre.All,
   films: [],
@@ -22,7 +20,7 @@ const initialState: FilmData = {
   similarFilmsDisplayed: [],
   filmsByGenre: [],
   genreFilmsCount: 8,
-  similarFilmsCount: 8,
+  similarFilmsCount: 4,
   promoFilm: null,
   film: null,
   similarFilms: [],
@@ -55,13 +53,13 @@ export const filmData = createSlice({
 
     increaseSimilarFilmsCount(state) {
       state.similarFilmsCount = Math.min(
-        state.similarFilmsCount + 8,
+        state.similarFilmsCount + 4,
         state.similarFilms.length
       );
     },
 
     resetSimilarFilmsCount(state) {
-      state.similarFilmsCount = Math.min(8, state.similarFilms.length);
+      state.similarFilmsCount = Math.min(4, state.similarFilms.length);
     },
 
     setGenre(state, action: PayloadAction<{ genre: Genre }>) {
@@ -92,9 +90,9 @@ export const filmData = createSlice({
   },
   extraReducers(builder) {
     builder
-      // load films
       .addCase(fetchFilmsAction.pending, (state) => {
         state.isFilmsLoading = true;
+        state.hasError = false;
       })
       .addCase(fetchFilmsAction.fulfilled, (state, action) => {
         const films = action.payload;
@@ -107,10 +105,9 @@ export const filmData = createSlice({
         state.isFilmsLoading = false;
         state.hasError = true;
       })
-
-      // film
       .addCase(fetchFilmAction.pending, (state) => {
         state.isFilmLoading = true;
+        state.hasError = false;
       })
       .addCase(fetchFilmAction.fulfilled, (state, action) => {
         state.film = action.payload;
@@ -120,23 +117,23 @@ export const filmData = createSlice({
         state.isFilmLoading = false;
         state.hasError = true;
       })
-      // similar films
       .addCase(fetchSimilarFilmsAction.pending, (state) => {
         state.isSimilarFilmsLoading = true;
+        state.hasError = false;
       })
       .addCase(fetchSimilarFilmsAction.fulfilled, (state, action) => {
         const films = action.payload;
         state.isSimilarFilmsLoading = false;
         state.similarFilms = films;
-        state.similarFilmsDisplayed = films.slice(0, Math.min(8, films.length));
+        state.similarFilmsDisplayed = films.slice(0, Math.min(4, films.length));
       })
       .addCase(fetchSimilarFilmsAction.rejected, (state) => {
         state.isSimilarFilmsLoading = false;
         state.hasError = true;
       })
-      // promo film
       .addCase(fetchPromoFilmAction.pending, (state) => {
         state.isPromoFilmLoading = true;
+        state.hasError = false;
       })
       .addCase(fetchPromoFilmAction.fulfilled, (state, action) => {
         state.promoFilm = action.payload;
@@ -146,9 +143,9 @@ export const filmData = createSlice({
         state.isPromoFilmLoading = false;
         state.hasError = true;
       })
-      // comments
       .addCase(fetchCommentsAction.pending, (state) => {
         state.isCommentsLoading = true;
+        state.hasError = false;
       })
       .addCase(fetchCommentsAction.fulfilled, (state, action) => {
         state.comments = action.payload;
@@ -161,19 +158,18 @@ export const filmData = createSlice({
 
       .addCase(sendCommentAction.pending, (state) => {
         state.isCommentSend = true;
+        state.hasError = false;
       })
       .addCase(sendCommentAction.rejected, (state) => {
         state.isCommentSend = false;
-        state.hasError = true;
       })
       .addCase(sendCommentAction.fulfilled, (state, action) => {
         state.comments = [...state.comments, action.payload];
         state.isCommentSend = false;
       })
-
-
       .addCase(fetchUserListAction.pending, (state) => {
         state.isUserFilmsLoading = true;
+        state.hasError = false;
       })
       .addCase(fetchUserListAction.fulfilled, (state, action) => {
         state.userListFilms = action.payload;
@@ -181,7 +177,10 @@ export const filmData = createSlice({
       })
       .addCase(fetchUserListAction.rejected, (state) => {
         state.isUserFilmsLoading = false;
-        state.hasError = true;
+        const authorizationStatus = useAppSelector(getAuthorizationStatus);
+        if (authorizationStatus === AuthorizationStatus.Auth){
+          state.hasError = true;
+        }
       });
   },
 });

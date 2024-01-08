@@ -1,13 +1,13 @@
 import { render, screen } from '@testing-library/react';
 import { withHistory, withStore } from '../../utils/mock-component';
-import WelcomePage from './welcome-page';
+import MainPage from './main-page';
 import { makeFakeStore, makeFakePromoFilm } from '../../utils/mocks';
 describe('Component: WelcomePage', () => {
   it('should render correctly', () => {
     const store = makeFakeStore();
     const promoFilm = makeFakePromoFilm();
     const { withStoreComponent } = withStore(
-      <WelcomePage
+      <MainPage
         promoFilm={promoFilm}
         authorizationStatus={store.USER.authorizationStatus}
       />,

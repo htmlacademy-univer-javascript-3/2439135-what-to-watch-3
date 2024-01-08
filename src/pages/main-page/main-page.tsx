@@ -1,14 +1,16 @@
-import { FilmCards } from '../../components/film-cards/film-cards';
-import { FilmType } from '../../types/films';
-import { useAppSelector, useAppDispatch } from '../../hooks';
+import { FilmCards } from '../../components/film-cards/film-cards.tsx';
+import { FilmType } from '../../types/films.ts';
+import { useAppSelector, useAppDispatch } from '../../hooks/index.ts';
 import { GenresList } from '../../components/genres-list/genres-list.tsx';
-import { AuthorizationStatus } from '../../const';
+import { AuthorizationStatus } from '../../const.ts';
 import { UserBlock } from '../../components/user-block/user-block.tsx';
-
+import { Helmet } from 'react-helmet-async';
 import {
   getFilmsCount,
   getFilmsByGenre,
   getFilmsDisplayed,
+  getFilmsDataLoadingStatus,
+  getPromoFilmDataLoadingStatus,
 } from '../../store/film-data/selectors.ts';
 import {
   increaseFilmsCount,
@@ -16,13 +18,13 @@ import {
 } from '../../store/film-data/film-data.ts';
 import { Link } from 'react-router-dom';
 import { AddToFavorite } from '../../components/add-to-favorite/add-to-favorite.tsx';
-
+import { Spinner } from '../../components/spinner/spinner.tsx';
 type WelcomePageProps = {
   promoFilm: FilmType | null;
   authorizationStatus: AuthorizationStatus;
 };
 
-function WelcomePage({
+function MainPage({
   promoFilm,
   authorizationStatus,
 }: WelcomePageProps): JSX.Element {
@@ -30,10 +32,16 @@ function WelcomePage({
   const countDisplayedFilms = useAppSelector(getFilmsCount);
   const filmsByGenre = useAppSelector(getFilmsByGenre);
   const films = useAppSelector(getFilmsDisplayed);
-
-
+  const isFilmsDataLoading = useAppSelector(getFilmsDataLoadingStatus);
+  const isPromoFilmDataLoading = useAppSelector(getPromoFilmDataLoadingStatus);
+  if (isFilmsDataLoading || isPromoFilmDataLoading) {
+    return <Spinner />;
+  }
   return (
     <>
+      <Helmet>
+        <title>What to watch. Main page</title>
+      </Helmet>
       <section className="film-card">
         <div className="film-card__bg">
           <img src={promoFilm?.backgroundImage} alt={promoFilm?.name} />
@@ -135,4 +143,4 @@ function WelcomePage({
   );
 }
 
-export default WelcomePage;
+export default MainPage;

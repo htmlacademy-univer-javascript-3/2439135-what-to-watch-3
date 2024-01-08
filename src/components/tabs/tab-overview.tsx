@@ -19,13 +19,14 @@ export function GetTextRating(rating: number): string {
 }
 export function TabOverview({ film }: TabOverviewProps): JSX.Element {
   const comments = useAppSelector(getComments);
-  const score = GetTextRating(film.rating);
+  const rating = comments.length === 0 ? 0 : film.rating;
+  const score = GetTextRating(rating);
   return (
     <>
       <div className="film-rating">
         <div className="film-rating__score">{score}</div>
         <p className="film-rating__meta">
-          <span className="film-rating__level">{film.rating}</span>
+          <span className="film-rating__level">{rating}</span>
           <span className="film-rating__count">{comments.length} ratings</span>
         </p>
       </div>
@@ -38,7 +39,7 @@ export function TabOverview({ film }: TabOverviewProps): JSX.Element {
         </p>
 
         <p className="film-card__starring">
-          <strong>Starring: {film.starring}</strong>
+          <strong>Starring: {film.starring.join(', ')}</strong>
         </p>
       </div>
     </>

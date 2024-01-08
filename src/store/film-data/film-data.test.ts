@@ -21,7 +21,7 @@ describe('Film data ', () => {
     similarFilmsDisplayed: [],
     filmsByGenre: [],
     genreFilmsCount: 8,
-    similarFilmsCount: 8,
+    similarFilmsCount: 4,
     promoFilm: null,
     film: null,
     similarFilms: [],
@@ -112,7 +112,7 @@ describe('Film data ', () => {
     const fakeFilms = makeFakeFilms();
     const expectedState = {
       ...defaultState,
-      similarFilmsCount: Math.min(fakeFilms.length, 16),
+      similarFilmsCount: Math.min(fakeFilms.length, 8),
       similarFilms: fakeFilms,
     };
 
@@ -178,7 +178,7 @@ describe('Film data ', () => {
 
   it('should set displayed similar films with "setSimilarFilmsDisplayed" action', () => {
     const fakeFilms = makeFakeFilms();
-    const similarFilmsCount = Math.min(8, fakeFilms.length);
+    const similarFilmsCount = Math.min(4, fakeFilms.length);
     const expectedState = {
       ...defaultState,
       similarFilms: fakeFilms,
